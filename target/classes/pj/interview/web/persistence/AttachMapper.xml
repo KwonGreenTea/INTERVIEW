@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="pj.interview.web.persistence.AttachMapper">
+
+	<resultMap type="pj.interview.web.domain.Attach"
+		id="attachResultMap">
+		
+		<id property="attachId" column="ATTACH_ID" /> 
+		<result property="boardId" column="BOARD_ID" />
+		<result property="attachPath" column="ATTACH_PATH" />
+		<result property="attachRealName" column="ATTACH_REAL_NAME" />
+		<result property="attachChgName" column="ATTACH_CHG_NAME" />
+		<result property="attachExtension" column="ATTACH_EXTENSION"/>
+		<result property="attachDateCreated" column="ATTACH_DATE_CREATED"/>
+	</resultMap>
+
+	<insert id="insert">
+		INSERT INTO ATTACH 
+		(ATTACH_ID, BOARD_ID, ATTACH_PATH, ATTACH_REAL_NAME, ATTACH_CHG_NAME, ATTACH_EXTENSION)
+		VALUES (ATTACH_SEQ.NEXTVAL, BOARD_SEQ.CURRVAL, #{attachPath}, #{attachRealName}, #{attachChgName}, #{attachExtension})
+	</insert>
+
+	
+	<select id="selectByBoardId" resultMap="attachResultMap">
+		SELECT * FROM ATTACH
+		WHERE BOARD_ID = #{boardId}
+	</select>
+	
+	<select id="selectByAttachId" resultMap="attachResultMap">
+		SELECT * FROM ATTACH 
+		WHERE ATTACH_ID = #{attachId}
+	</select>
+	
+	<insert id="insertModify">
+		INSERT INTO ATTACH 
+		(ATTACH_ID, BOARD_ID, ATTACH_PATH, ATTACH_REAL_NAME, ATTACH_CHG_NAME, ATTACH_EXTENSION)
+		VALUES (ATTACH_SEQ.NEXTVAL, #{boardId}, #{attachPath}, #{attachRealName}, #{attachChgName}, #{attachExtension})
+	</insert>
+
+	<delete id="delete">
+		DELETE FROM ATTACH
+		WHERE BOARD_ID = #{boardId}
+	</delete>
+	
+	<!-- 하루 전에 만들어진 파일의 경로를 불러온다 -->
+	<select id="selectOldList" resultMap="attachResultMap">
+		SELECT * FROM ATTACH
+		WHERE ATTACH_PATH = TO_CHAR(SYSDATE -1, 'yyyy\mm\dd')
+	</select>
+	
+
+</mapper>
+
+
+
