@@ -26,7 +26,7 @@ public class RootConfig {
 	/* 배포 설정 */
 	@Bean
 	public DataSource dataSource() { // DataSource 빈 생성 메서드
-		System.setProperty("oracle.net.tns_admin", "D:/Key/Wallet");
+		System.setProperty("oracle.net.tns_admin", "/home/ubuntu/wallet");
 		
 		HikariConfig config = new HikariConfig(); // 설정 객체 생성
 		config.setDriverClassName("oracle.jdbc.OracleDriver"); // JDBC 드라이버 클래스명 설정
