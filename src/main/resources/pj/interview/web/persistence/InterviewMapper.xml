@@ -24,84 +24,27 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- select, insert, update, delete 태그 : SQL 쿼리 정의 태그 id : 쿼리 식별 역할. Mapper 
 		인터페이스 메서드 이름과 매칭 resultMap : 쿼리 결과 매핑. <resultMap> 태그의 id를 적용 -->
 
-	<insert id="insert">
+	<insert id="createInterview">
 		<!-- 게시글 등록 -->
-		INSERT INTO BOARD (BOARD_ID, BOARD_TITLE, BOARD_CONTENT, MEMBER_ID)
-		VALUES (BOARD_SEQ.NEXTVAL, #{boardTitle}, #{boardContent}, #{memberId})
+		INSERT INTO INTERVIEW (INTERVIEW_ID, MEMBER_ID, QUESTION)
+		VALUES (INTERVIEW_SEQ.NEXTVAL, #{memberId}, #{question})
 	</insert>
 
-	<select id="selectList" resultMap="boardResultMap">
-		<!-- 전체 게시글 조회 -->
-		SELECT * FROM BOARD ORDER BY BOARD_ID DESC
-		<!-- SELECT BOARD_ID, BOARD_TITLE, BOARD_CONTENT, MEMBER_ID, BOARD_DATE_CREATED 
-			FROM BOARD와 동일 -->
-	</select>
-
-
-	<select id="selectOne" resultMap="boardResultMap">
-		<!-- 특정 게시글 조회 -->
-		SELECT * FROM BOARD WHERE BOARD_ID = #{boardId}
-	</select>
-
-	<update id="update">
-		<!-- 특정 게시글 수정 -->
-		UPDATE BOARD SET
-		BOARD_TITLE = #{boardTitle},
-		BOARD_CONTENT =
-		#{boardContent},
-		BOARD_DATE_CREATED = SYSDATE
-		WHERE BOARD_ID =
-		#{boardId}
-	</update>
-
-	<delete id="delete">
-		<!-- 특정 게시글 삭제 -->
-		DELETE BOARD
-		WHERE BOARD_ID = #{boardId}
-	</delete>
-
-	<select id="selectListByPagination" resultMap="boardResultMap">
-			SELECT * 
-			FROM (
-			    SELECT ROW_NUMBER() OVER (ORDER BY BOARD_ID DESC) AS RN, BOARD.*
-			    FROM BOARD  
-			<choose>
-				<when test="type == 'title'.toString()">
-					WHERE BOARD_TITLE LIKE '%'||#{keyword}||'%'
-				</when>
-				<when test="type == 'content'.toString()">
-					WHERE BOARD_CONTENT LIKE '%'||#{keyword}||'%'
-				</when>
-				<when test="type == 'writer'.toString()">
-					WHERE MEMBER_ID LIKE '%'||#{keyword}||'%'
-				</when>
-			</choose>	   
-			) 
-			WHERE RN BETWEEN #{start} AND #{end}
-	</select>
-
-	<!-- resultType : 쿼리 결과를 자바 객체에 매핑하기 위해 사용 -->
-	<select id="selectTotalCount" resultType="Integer">
-		SELECT COUNT(*)
-		TOTAL_COUNT FROM BOARD
-			<choose>
-				<when test="type == 'title'.toString()">
-					WHERE BOARD_TITLE LIKE '%'||#{keyword}||'%'
-				</when>
-				<when test="type == 'content'.toString()">
-					WHERE BOARD_CONTENT LIKE '%'||#{keyword}||'%'
-				</when>
-				<when test="type == 'writer'.toString()">
-					WHERE MEMBER_ID LIKE '%'||#{keyword}||'%'
-				</when>
-			</choose>	
-	</select>
-	
-	<update id="updateReplyCount">
-		UPDATE BOARD
-		SET REPLY_COUNT = REPLY_COUNT + #{amount}
-		WHERE BOARD_ID = #{boardId}
-	</update>
+	<update id="updateRslInterview">
+		UPDATE INTERVIEW 
+		SET ANSWER = #{answer}, 
+		    SUGGEST = #{suggest}, 
+		    EMOTION = #{emotion}, 
+		    INTENTION = #{intention}
+		WHERE INTERVIEW_ID = (
+			SELECT INTERVIEW_ID FROM (
+				SELECT INTERVIEW_ID 
+				FROM INTERVIEW 
+				WHERE MEMBER_ID = #{memberId}
+				ORDER BY INTERVIEW_ID DESC
+			) WHERE ROWNUM = 1
+		)
+</update>
 
 </mapper>
 

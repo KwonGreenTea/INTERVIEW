@@ -48,7 +48,7 @@ body {
 <body>
 	<%@ include file="common/header.jsp" %>
 	<div class="main-container">
-		<a href="interview/interview" class="box-link">
+		<a href="interview/page" class="box-link">
 			<div class="box">인터뷰</div>
 		</a> <a href="interview/userList" class="box-link">
 			<div class="box">다른 사용자의 인터뷰 보기</div>
