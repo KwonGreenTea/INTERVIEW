@@ -71,10 +71,18 @@ public class InterviewController {
 
 		// 파일 경로
 		// 디렉토리에 기존에 남아있는 파일이 있으면 삭제
+		/* 배포 */
+		String userFilePath = "/home/ubuntu/user" + memberId + ".json";
+		String questionFilePath = "/home/ubuntu/question" + "q_" + memberId + ".json";
+		String answerFilePath = "/home/ubuntu/answer" + "a_" + memberId + ".json";
+		String resultFilePath = "/home/ubuntu/result" + "result_a_" + memberId + ".json";
+		
+		/* 개발
 		String userFilePath = "D:\\upload\\" + memberId + ".json";
 		String questionFilePath = "D:\\upload\\" + "q_" + memberId + ".json";
 		String answerFilePath = "D:\\upload\\" + "a_" + memberId + ".json";
 		String resultFilePath = "D:\\upload\\" + "result_a_" + memberId + ".json";
+		*/
 		File userFile = new File(userFilePath);
 		File questionFile = new File(questionFilePath);
 		File answerFile = new File(answerFilePath);
@@ -153,10 +161,16 @@ public class InterviewController {
 		// User ID 불러옴
 		String memberId = userDetails.getUsername();
 
-		// 파일 경로
+		/* 배포 */
+		String questionFilePath = "/home/ubuntu/question" + "q_" + memberId + ".json";
+		String answerFilePath = "/home/ubuntu/answer" + "a_" + memberId + ".json";
+		String resultFilePath = "/home/ubuntu/result" + "result_a_" + memberId + ".json";
+		
+		/* 개발
 		String questionFilePath = "D:\\upload\\" + "q_" + memberId + ".json";
 		String answerFilePath = "D:\\upload\\" + "a_" + memberId + ".json";
 		String resultFilePath = "D:\\upload\\" + "result_a_" + memberId + ".json";
+		*/
 		
 		// file 미존재시
 		File questionFile = new File(questionFilePath);
