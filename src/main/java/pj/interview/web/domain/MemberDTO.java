@@ -13,8 +13,12 @@ import lombok.ToString;
 @ToString 
 public class MemberDTO {
 	private String memberId;
-	private String memberPw;
-	private String memberName;
-	private Date regDate;
-	private int enabled;
+    private String memberPw;
+    private String memberName;
+    private String sector;
+    private String gender;
+    private String career;
+    private Date createdDate;
+    private Date updatedDate;
+    private int enabled;
 }

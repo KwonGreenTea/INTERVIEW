@@ -11,7 +11,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<id property="memberId" column="MEMBER_ID" /> 
 		<result property="memberPw" column="MEMBER_PW" />
 		<result property="memberName" column="MEMBER_NAME" />
-		<result property="regDate" column="REG_DATE" />
+		<result property="sector" column="SECTOR" />
+		<result property="gender" column="GENDER" />
+		<result property="career" column="CAREER" />
+		<result property="createdDate" column="CREATED_DATE" />
+		<result property="updatedDate" column="UPDATED_DATE" />
 		<result property="enabled" column="ENABLED" />
 	</resultMap>
 	
@@ -60,7 +64,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		UPDATE MEMBER
     	SET
         MEMBER_PW = #{memberPw},
-        MEMBER_NAME = #{memberName}
+        MEMBER_NAME = #{memberName},
+        UPDATED_DATE = #{updatedDate}
     	WHERE
         MEMBER_ID = #{memberId}
 	</update>
@@ -78,6 +83,3 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</delete>
 
 </mapper>
-
-
-

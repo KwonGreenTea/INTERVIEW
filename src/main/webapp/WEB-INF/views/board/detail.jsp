@@ -161,7 +161,7 @@ button:hover {
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
     </form>
 
-    <!-- 이미지 파일 -->
+    <!-- 이미지 파일 
     <div class="section">
         <h2>이미지 파일</h2>
         <div class="image-list">
@@ -177,7 +177,7 @@ button:hover {
         </div>
     </div>
 
-    <!-- 첨부 파일 -->
+    // 첨부 파일
     <div class="section">
         <h2>첨부 파일</h2>
         <div class="attach-list">
@@ -190,6 +190,8 @@ button:hover {
             </c:forEach>
         </div>
     </div>
+    
+    -->
 
     <!-- 댓글 작성 -->
     <div class="section reply-section">

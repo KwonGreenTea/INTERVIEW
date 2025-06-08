@@ -65,7 +65,8 @@ public class MemberServiceImple implements MemberService {
         memberDTO.setMemberId(member.getMemberId());
         memberDTO.setMemberPw(member.getMemberPw());
         memberDTO.setMemberName(member.getMemberName());
-        memberDTO.setRegDate(member.getRegDate());
+        memberDTO.setCreatedDate(member.getCreatedDate());
+        memberDTO.setUpdatedDate(member.getUpdatedDate());
         memberDTO.setEnabled(member.getEnabled());
         return memberDTO;
     }
@@ -75,7 +76,8 @@ public class MemberServiceImple implements MemberService {
         entity.setMemberId(memberDTO.getMemberId());
         entity.setMemberPw(memberDTO.getMemberPw());
         entity.setMemberName(memberDTO.getMemberName());
-        entity.setRegDate(memberDTO.getRegDate());
+        entity.setCreatedDate(memberDTO.getCreatedDate());
+        entity.setUpdatedDate(memberDTO.getUpdatedDate());
         entity.setEnabled(memberDTO.getEnabled());
         return entity;
     }

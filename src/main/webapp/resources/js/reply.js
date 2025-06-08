@@ -65,7 +65,8 @@ $(document).ready(function(){
 					console.log(this);
 				  
 					// 전송된 replyDateCreated는 문자열 형태이므로 날짜 형태로 변환이 필요
-					var replyDateCreated = new Date(this.replyDateCreated);
+					const date = new Date(this.replyDateCreated); 
+    				const formattedDate = `${date.getMonth() + 1}월 ${date.getDate()}일 ${date.getHours()}시 ${date.getMinutes()}분`;
 					
 					var hidden = '';
 					var readonly = '';
@@ -83,7 +84,7 @@ $(document).ready(function(){
 						+ '&nbsp;&nbsp;' // 공백
 						+ '<input type="text" '+ readonly +' id="replyContent" value="'+ this.replyContent +'">'
 						+ '&nbsp;&nbsp;'
-						+ replyDateCreated
+						+ formattedDate
 						+ '&nbsp;&nbsp;'
 						+ '<button class="btn_update" '+ hidden +' >수정</button>'
 						+ '<button class="btn_delete" '+ hidden +' >삭제</button>'

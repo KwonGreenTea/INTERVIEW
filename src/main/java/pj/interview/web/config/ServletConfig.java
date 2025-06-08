@@ -39,14 +39,6 @@ public class ServletConfig implements WebMvcConfigurer {
 		return "D:\\upload";
 	}
 	
-	/* 배포설정 
-	// 파일을 저장할 경로 bean 생성
-	@Bean
-	public String uploadPath() {
-		return "/home/ubuntu/upload";
-	}
-	*/
-	
 	// MultipartResolver bean 생성
 	@Bean
 	public CommonsMultipartResolver multipartResolver() {
