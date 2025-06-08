@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="pj.interview.web.persistence.MemberMapper">
+
+	<resultMap type="pj.interview.web.domain.Member"
+		id="memberResultMap">
+		
+		<id property="memberId" column="MEMBER_ID" /> 
+		<result property="memberPw" column="MEMBER_PW" />
+		<result property="memberName" column="MEMBER_NAME" />
+		<result property="regDate" column="REG_DATE" />
+		<result property="enabled" column="ENABLED" />
+	</resultMap>
+	
+	<resultMap type="pj.interview.web.domain.MemberRole"
+		id="roleResultMap">
+		<id property="roleId" column="ROLE_ID" /> 
+		<result property="memberId" column="MEMBER_ID" />
+		<result property="roleName" column="ROLE_NAME" />
+	</resultMap>
+
+	<!-- 회원 정보 등록 -->
+	<insert id="insertMember">
+		INSERT INTO MEMBER 
+		(MEMBER_ID, MEMBER_PW, MEMBER_NAME)
+		VALUES (#{memberId}, #{memberPw}, #{memberName})
+
+	</insert>
+	
+	<!-- 권한 정보 등록 -->
+	<insert id="insertMemberRole">
+		INSERT INTO MEMBER_ROLE
+		(ROLE_ID, MEMBER_ID)
+		VALUES (ROLE_SEQ.NEXTVAL, #{memberId})
+	</insert>
+	
+	<!-- 회원 정보 조회 -->
+	<select id="selectMemberByMemberId" resultMap="memberResultMap">
+		SELECT * FROM MEMBER 
+		WHERE MEMBER_ID = #{memberId}
+	</select>
+	
+	<!-- 권한 정보 조회 -->
+	<select id="selectRoleByMemberId" resultMap="roleResultMap">
+		SELECT * FROM MEMBER_ROLE
+		WHERE MEMBER_ID = #{memberId}
+	</select>
+	
+	<!-- 기존 회원 아이디 조회 -->
+	<select id="selectExistingMemberId" resultType="Integer">
+		SELECT COUNT(*) FROM MEMBER
+		WHERE MEMBER_ID = #{memberId}
+	</select>
+	
+	<!-- 회원 정보 수정 -->
+	<update id="updateMember">
+		UPDATE MEMBER
+    	SET
+        MEMBER_PW = #{memberPw},
+        MEMBER_NAME = #{memberName}
+    	WHERE
+        MEMBER_ID = #{memberId}
+	</update>
+	
+	<!-- 회원 정보 삭제 -->
+	<delete id="deleteMember">
+		DELETE MEMBER
+    	WHERE MEMBER_ID = #{memberId}
+	</delete>	
+	
+	<!-- 권한 정보 삭제 -->
+	<delete id="deleteMemberRole">
+		DELETE MEMBER_ROLE
+		WHERE MEMBER_ID = #{memberId}
+	</delete>
+
+</mapper>
+
+
+
