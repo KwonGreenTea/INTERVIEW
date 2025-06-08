@@ -18,6 +18,7 @@ import pj.interview.web.service.BoardService;
 import pj.interview.web.util.PageMaker;
 import pj.interview.web.util.Pagination;
 
+// 창준 왔다감 0608
 @Controller // @Component
 // * 표현 계층(Presentation Layer)
 // - 클라이언트(JSP 페이지 등)와 service를 연결하는 역할
