@@ -14,7 +14,7 @@
 	href="${pageContext.request.contextPath }/resources/css/image.css">
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath }/resources/css/attach.css">
-<title>글 작성 페이지</title>
+<title>인터뷰버디</title>
 <style type="text/css">
 li {
 	display: inline-block;

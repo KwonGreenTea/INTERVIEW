@@ -9,35 +9,62 @@
 body {
 	background-color: #f4f6f8;
 	font-family: 'Arial', sans-serif;
+	margin: 0;
+	padding: 0;
 }
 
 .chat-box {
 	max-width: 1200px;
-	margin: 20px auto 0;
+	margin: 20px auto;
 	background-color: #e6f0f5;
-	padding: 45px;
-	border-radius: 10px;
+	padding: 30px;
+	border-radius: 12px;
 	height: 500px;
-	overflow-y: scroll;
+	overflow-y: auto;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .message {
-	margin: 5px 0;
-	padding: 12px 16px;
+	margin: 10px 0;
+	padding: 14px 18px;
 	border-radius: 10px;
 	max-width: 80%;
 	clear: both;
+	line-height: 1.5;
+	font-size: 15px;
+	word-break: break-word;
 }
 
-.user {
+.message.user {
 	background-color: #ffe26f;
 	float: right;
-	text-align: right;
+	text-align: left;
 }
 
-.server {
+.message.server {
 	background-color: white;
 	float: left;
+	text-align: left;
+}
+
+.message.server.suggest {
+	border-left: 5px solid #007bff;
+	background-color: #f0f7ff;
+}
+
+.message.server.analysis {
+	border-left: 5px solid #28a745;
+	background-color: #f0fff4;
+}
+
+.message.server.feedback {
+	border-left: 5px solid #ffc107;
+	background-color: #fffdf0;
+}
+
+.message.server.feedback ul {
+	margin: 5px 0 0 15px;
+	padding: 0;
 }
 
 .input-box {
@@ -47,28 +74,36 @@ body {
 
 input[type="text"] {
 	width: 70%;
-	padding: 10px;
+	padding: 12px;
 	font-size: 16px;
-	border-radius: 5px;
+	border-radius: 6px;
 	border: 1px solid #ccc;
+	box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
 button {
-	padding: 10px 15px;
+	padding: 10px 18px;
 	font-size: 16px;
-	border-radius: 5px;
+	border-radius: 6px;
 	background-color: #4a90e2;
 	color: white;
 	border: none;
 	cursor: pointer;
+	transition: background-color 0.3s ease;
 }
+
+button:hover {
+	background-color: #357ABD;
+}
+
 </style>
 <!-- jquery 라이브러리 import -->
 <script src="https://code.jquery.com/jquery-3.7.1.js">
 	
 </script>
 <meta charset="UTF-8">
-<title>인터뷰 페이지</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>인터뷰버디</title>
 </head>
 <body>
 	<%@ include file="../common/header.jsp"%>
@@ -103,6 +138,8 @@ button {
 				
 				const handleClick = function() {
 					if(confirm("질문을 출력할까요?")){
+						serverMsg.removeEventListener("click", handleClick);
+						serverMsg.style.cursor = "default";
 						serverMsg.textContent = "질문 생성중...";
 						
 						// $.ajax로 송수신
@@ -112,15 +149,15 @@ button {
 							success : function(result) { // 전송 성공 시 서버에서 result 값 전송
 								console.log(result);
 								
-								// 이벤트 제거해서 한번만 실행되도록
-								serverMsg.removeEventListener("click", handleClick);
-								serverMsg.style.cursor = "default";
+								// 이벤트 제거해서 한번만 실행
 								serverMsg.textContent = result;
 								
 								userInput.disabled = false;
 							},
 							error: function(xhr, status, error) {
 								alert("다시 시도해주세요");
+								serverMsg.addEventListener("click", handleClick);
+								serverMsg.style.cursor = "pointer";
 								serverMsg.textContent = "해당 채팅을 누르면 질문이 생성됩니다!";
 					    	}
 						}); // end ajax
@@ -146,6 +183,8 @@ button {
 			chatBox.appendChild(userMessage);
 
 			if (confirm("수정할 수 없습니다. 답변을 전송하시나요?")) {
+				// 입력창 초기화
+				input.value = "";
 				// 서버 처리 메시지
 				const serverMsg = document.createElement("div");
 				serverMsg.className = "message server";
@@ -161,6 +200,37 @@ button {
 						input.disabled = true;
 
 						serverMsg.textContent = "답변이 완료되었습니다!";
+						
+						// 분석 정보
+						const analysisBox = document.createElement("div");
+						analysisBox.className = "message server analysis";
+						analysisBox.innerHTML = `
+							<strong>📊 분석 결과</strong><br/>
+							🧠 의도: ${result.intention} (${result.intentionScore}점)<br/>
+							😃 감정: ${result.emotion} (${result.emotionScore}점)<br/>
+							📝 길이 점수: ${result.lengthScore}점<br/>
+							🎯 품질 점수: ${result.qualityScore}점<br/>
+							🔢 총점: ${result.totalScore}점<br/>
+							🧮 단어 수: ${result.wordCount}개<br/>
+							🏅 등급: <strong>${result.grade}</strong>
+						`;
+						chatBox.appendChild(analysisBox);
+
+						// 피드백 목록
+						if (result.feedbackList && result.feedbackList.length > 0) {
+							const feedbackBox = document.createElement("div");
+							feedbackBox.className = "message server feedback";
+							feedbackBox.innerHTML = `<strong>📝 피드백:</strong><ul>` + 
+								result.feedbackList.map(fb => `<li>${fb}</li>`).join("") + 
+								`</ul>`;
+							chatBox.appendChild(feedbackBox);
+						}
+						
+						// 제안
+						const suggestBox = document.createElement("div");
+						suggestBox.className = "message server suggest";
+						suggestBox.innerHTML = `<strong>💡 제안:</strong> ${result.suggest}`;
+						chatBox.appendChild(suggestBox);
 					},
 					error: function (xhr, status, error) {
 						alert("다시 시도해주세요");
@@ -172,9 +242,6 @@ button {
 
 			// 스크롤 내리기
 			chatBox.scrollTop = chatBox.scrollHeight;
-
-			// 입력창 초기화
-			input.value = "";
 		}
 
 	</script>

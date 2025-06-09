@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -119,7 +120,7 @@ public class InterviewController {
         
 		// -- 질문이 생성될 때까지 대기 
 		int waitTime = 0;
-		while (!questionFile.exists() && waitTime < 30000) { // 최대 30초 O대기
+		while (!questionFile.exists() && waitTime < 30000) { // 최대 60초 대기
 			Thread.sleep(1000);
 			waitTime += 1000;
 		}
@@ -141,9 +142,6 @@ public class InterviewController {
 		
 		log.info(memberId + "의 Question Json 파일 내에 질문 출력 완료");
 		
-		// User JSON 삭제
-		userFile.delete();
-		
 		InterviewDTO interviewDTO = new InterviewDTO();
 		interviewDTO.setMemberId(memberId);
 		interviewDTO.setQuestion(question);
@@ -151,19 +149,24 @@ public class InterviewController {
 		// INTERVIEW 테이블 질문 생성
 		int result = interviewService.createInterview(interviewDTO);
 		
+		// User JSON 삭제
+		userFile.delete();
+					
 		if(result > 0) {
 			return new ResponseEntity<String>(question, HttpStatus.OK);
 		} else {
-			// Question JSON 삭제
 			questionFile.delete();
 			return new ResponseEntity<String>("fail", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
 	@GetMapping(value = "/answer", produces = "text/plain;charset=UTF-8") 
-	public ResponseEntity<String> answerGET(String answer, @AuthenticationPrincipal UserDetails userDetails)
+	public ResponseEntity<Map<String, Object>> answerGET(Model model, String answer, @AuthenticationPrincipal UserDetails userDetails)
 			throws IOException, InterruptedException {
 		log.info("answerGET()");
+		
+		Map<String, Object> errorResponse = new HashMap<>();
+		errorResponse.put("error", "fail");
 		
 		// User ID 불러옴
 		String memberId = userDetails.getUsername();
@@ -182,23 +185,24 @@ public class InterviewController {
 		// file 미존재시
 		File questionFile = new File(questionFilePath);
 	    if (!questionFile.exists()) {
-	        return new ResponseEntity<>("fail", HttpStatus.NOT_FOUND);
+	        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
 	    }
-		
-		// -- 답변 내용을 JSON에 저장 후 다른 디렉토리에 파일 이동
-	    // ObjectMapper로 JSON 읽기
+	    
+	    // Question JSON 로드
 	    ObjectMapper objectMapper = new ObjectMapper();
-	    Map<String, Object> jsonMap = objectMapper.readValue(questionFile, Map.class);
+	    Map<String, Object> q_jsonMap = objectMapper.readValue(questionFile, Map.class);
 	    
-	    Map<String, Object> answerMap = (Map<String, Object>) jsonMap.get("answer");
+	    // 제안 답변 가져옴
+	 	Map<String, Object> summaryMap = (Map<String, Object>) ((Map<String, Object>) q_jsonMap.get("answer")).get("summary");
+	 	String suggest = (String) summaryMap.get("text");
+		
+		// -- 답변 내용을 Question JSON에 저장 후 result 디렉토리로 파일 이동
+	    Map<String, Object> answerMap = (Map<String, Object>) q_jsonMap.get("answer");
 	    List<Map<String, Object>> intentList = (List<Map<String, Object>>) answerMap.get("user_answer");
-	    
-	    if (intentList != null && !intentList.isEmpty()) {
-	        intentList.get(0).put("text", answer);
-	    }
+	    intentList.get(0).put("text", answer);
 
 	    File answerFile = new File(answerFilePath);
-	    objectMapper.writerWithDefaultPrettyPrinter().writeValue(answerFile, jsonMap);
+	    objectMapper.writerWithDefaultPrettyPrinter().writeValue(answerFile, q_jsonMap);
 	    
 	    // 저장 후 파일 권한 777로 설정 (rwxrwxrwx)
         Path path = answerFile.toPath();
@@ -210,41 +214,57 @@ public class InterviewController {
 		// -- 결과 JSON 파일이 생성될 때까지 대기 
 	    File resultFile = new File(resultFilePath);
 	    int waitTime = 0;
-		while (!resultFile.exists() && waitTime < 60000) { // 최대 60초 대기
+		while (!resultFile.exists() && waitTime < 100000) { // 최대 100초 대기
 			Thread.sleep(1000);
 			waitTime += 1000;
 		}
 		
 		// 생성되지 않았을 때
 		if (!resultFile.exists()) {
-			return new ResponseEntity<String>("fail", HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		
-		// -- JSON 파일을 읽어와서 결과 내용을 클라이언트에 전달
-		// JSON 전체 로드
-		Map<String, Object> jsonMap_rsl = objectMapper.readValue(resultFile, Map.class);
+		// -- JSON 파일을 읽어와서 model을 통해 클라이언트에 전달
+		Map<String, Object> rsl_jsonMap = objectMapper.readValue(resultFile, Map.class);
 
-		// 1. intent -> category
-		List<Map<String, Object>> intentList2 = (List<Map<String, Object>>) ((Map<String, Object>) jsonMap_rsl.get("answer")).get("intent");
-		String intent = (String) intentList2.get(0).get("category");
+        // 1. score_result 전체 맵 추출
+        Map<String, Object> scoreResultMap = (Map<String, Object>) rsl_jsonMap.get("score_result");
 
-		// 2. emotion -> category
-		List<Map<String, Object>> emotionList = (List<Map<String, Object>>) ((Map<String, Object>) jsonMap_rsl.get("answer")).get("emotion");
-		String emotion = (String) emotionList.get(0).get("category");
+        int total_score = (int) scoreResultMap.get("total");
+        int intent_score = (int) scoreResultMap.get("intent");
+        int emotion_score = (int) scoreResultMap.get("emotion");
+        int length_score = (int) scoreResultMap.get("length");
+        int quality_score = (int) scoreResultMap.get("quality");
 
-		// 3. summary -> text
-		Map<String, Object> summaryMap = (Map<String, Object>) ((Map<String, Object>) jsonMap_rsl.get("answer")).get("summary");
-		String suggest = (String) summaryMap.get("text");
+        // 2. breakdown 추출
+        Map<String, Object> breakdownMap = (Map<String, Object>) scoreResultMap.get("breakdown");
+
+        String intent = (String) breakdownMap.get("gt_intent");
+        String emotion = (String) breakdownMap.get("gt_emotion");
+        int wordCount = (int) breakdownMap.get("word_count");
+
+        // 3. grade 추출
+        String grade = (String) rsl_jsonMap.get("grade");
+
+        // 4. feedback 리스트 추출
+        List<String> feedbackList = (List<String>) rsl_jsonMap.get("feedback");
 		
 		log.info(memberId + "의 Result Json 파일 내에 질문 출력 완료");
 				
 		InterviewDTO interviewDTO = new InterviewDTO();
 		interviewDTO.setAnswer(answer);
 		interviewDTO.setMemberId(memberId);
+		interviewDTO.setSuggest(suggest);
 		interviewDTO.setIntention(intent);
 		interviewDTO.setEmotion(emotion);
-		interviewDTO.setSuggest(suggest);
-				
+		interviewDTO.setIntentionScore(intent_score);
+		interviewDTO.setEmotionScore(emotion_score);
+		interviewDTO.setTotalScore(total_score);
+		interviewDTO.setLengthScore(length_score);
+		interviewDTO.setQualityScore(quality_score);
+		interviewDTO.setWordCount(wordCount);
+		interviewDTO.setGrade(grade);
+		
 		// INTERVIEW 테이블 결과 업데이트
 		int result = interviewService.updateRslInterview(interviewDTO);
 		
@@ -252,11 +272,24 @@ public class InterviewController {
 			questionFile.delete();
 			answerFile.delete();
 			
-			return new ResponseEntity<String>("success", HttpStatus.OK);
+			Map<String, Object> response = new HashMap<>();
+			response.put("suggest", suggest);
+			response.put("intention", intent);
+			response.put("emotion", emotion);
+			response.put("intentionScore", intent_score);
+			response.put("emotionScore", emotion_score);
+			response.put("totalScore", total_score);
+			response.put("lengthScore", length_score);
+			response.put("qualityScore", quality_score);
+			response.put("wordCount", wordCount);
+			response.put("grade", grade);
+			response.put("feedbackList", feedbackList);
+
+			return new ResponseEntity<>(response, HttpStatus.OK);
 		} else {
-			// Question JSON 삭제
+			// result JSON 삭제
 			resultFile.delete();
-			return new ResponseEntity<String>("fail", HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 	

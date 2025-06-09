@@ -12,13 +12,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		id="interviewResultMap">
 		<!-- property : Entity 멤버 변수 column : DB 테이블 컬럼 -->
 		<id property="interviewId" column="INTERVIEW_ID"/>
-	    <result property="memberId" column="MEMBER_ID"/>
-	    <result property="question" column="QUESTION"/>
-	    <result property="answer" column="ANSWER"/>
-	    <result property="suggest" column="SUGGEST"/>
-	    <result property="createdDate" column="CREATED_DATE"/>
-	    <result property="emotion" column="EMOTION"/>
-	    <result property="intention" column="INTENTION"/>
+		<result property="memberId" column="MEMBER_ID"/>
+		<result property="question" column="QUESTION"/>
+		<result property="answer" column="ANSWER"/>
+		<result property="suggest" column="SUGGEST"/>
+		<result property="emotion" column="EMOTION"/>
+		<result property="intention" column="INTENTION"/>
+		<result property="emotionScore" column="EMOTION_SCORE"/>
+		<result property="intentionScore" column="INTENTION_SCORE"/>
+		<result property="totalScore" column="TOTAL_SCORE"/>
+		<result property="lengthScore" column="LENGTH_SCORE"/>
+		<result property="qualityScore" column="QUALITY_SCORE"/>
+		<result property="wordCount" column="WORD_COUNT"/>
+		<result property="grade" column="GRADE"/>
+		<result property="createdDate" column="CREATED_DATE"/>
 	</resultMap>
 
 	<!-- select, insert, update, delete 태그 : SQL 쿼리 정의 태그 id : 쿼리 식별 역할. Mapper 
@@ -35,7 +42,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SET ANSWER = #{answer}, 
 		    SUGGEST = #{suggest}, 
 		    EMOTION = #{emotion}, 
-		    INTENTION = #{intention}
+		    INTENTION = #{intention},
+		    EMOTION_SCORE = #{emotionScore},
+		    INTENTION_SCORE = #{intentionScore},
+		    TOTAL_SCORE = #{totalScore},
+		    LENGTH_SCORE = #{lengthScore},
+		    QUALITY_SCORE = #{qualityScore},
+		    WORD_COUNT = #{wordCount},
+		    GRADE = #{grade}
 		WHERE INTERVIEW_ID = (
 			SELECT INTERVIEW_ID FROM (
 				SELECT INTERVIEW_ID 

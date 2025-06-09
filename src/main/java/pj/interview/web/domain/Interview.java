@@ -13,13 +13,20 @@ import lombok.ToString;
 @ToString 
 public class Interview {
 	
-	private int interviewId; // INTERVIEW_ID
-    private String memberId; // MEMBER_ID
-    private String question; // QUESTION
-    private String answer; // ANSWER
-    private String suggest; // SUGGEST
-    private Date createdDate; // CREATED_DATE
-    private String emotion; // EMOTION
-    private String intention; // INTENTION
+	private int interviewId;
+    private String memberId;
+    private String question;
+    private String answer;
+    private String suggest;
+    private String emotion;
+    private String intention;
+    private int emotionScore;
+    private int intentionScore;
+    private int totalScore;
+    private int lengthScore;
+    private int qualityScore;
+    private int wordCount;
+    private String grade;
+    private Date createdDate;
 	
 } // end Interview

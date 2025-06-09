@@ -3,6 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta charset="UTF-8">
 <title>로그인 페이지</title>
 <style>
@@ -68,8 +69,9 @@
 
 	<div class="login-wrapper">
 		<div class="login-container">
-			<h1>로그인 페이지</h1>
-
+			<h1>로그인</h1>
+			<br>
+			
 			<!-- 에러 메시지 출력 -->
 			<h2>${errorMsg}</h2>
 
