@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +21,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -160,6 +160,7 @@ public class InterviewController {
 		}
 	}
 
+	@ResponseBody
 	@GetMapping(value = "/answer", produces = "text/plain;charset=UTF-8") 
 	public ResponseEntity<Map<String, Object>> answerGET(Model model, String answer, @AuthenticationPrincipal UserDetails userDetails)
 			throws IOException, InterruptedException {
@@ -231,7 +232,7 @@ public class InterviewController {
         Map<String, Object> scoreResultMap = (Map<String, Object>) rsl_jsonMap.get("score_result");
 
         int total_score = (int) scoreResultMap.get("total");
-        int intent_score = (int) scoreResultMap.get("intent");
+        int intention_score = (int) scoreResultMap.get("intent");
         int emotion_score = (int) scoreResultMap.get("emotion");
         int length_score = (int) scoreResultMap.get("length");
         int quality_score = (int) scoreResultMap.get("quality");
@@ -239,7 +240,7 @@ public class InterviewController {
         // 2. breakdown 추출
         Map<String, Object> breakdownMap = (Map<String, Object>) scoreResultMap.get("breakdown");
 
-        String intent = (String) breakdownMap.get("gt_intent");
+        String intention = (String) breakdownMap.get("gt_intent");
         String emotion = (String) breakdownMap.get("gt_emotion");
         int wordCount = (int) breakdownMap.get("word_count");
 
@@ -255,9 +256,9 @@ public class InterviewController {
 		interviewDTO.setAnswer(answer);
 		interviewDTO.setMemberId(memberId);
 		interviewDTO.setSuggest(suggest);
-		interviewDTO.setIntention(intent);
+		interviewDTO.setIntention(intention);
 		interviewDTO.setEmotion(emotion);
-		interviewDTO.setIntentionScore(intent_score);
+		interviewDTO.setIntentionScore(intention_score);
 		interviewDTO.setEmotionScore(emotion_score);
 		interviewDTO.setTotalScore(total_score);
 		interviewDTO.setLengthScore(length_score);
@@ -274,9 +275,9 @@ public class InterviewController {
 			
 			Map<String, Object> response = new HashMap<>();
 			response.put("suggest", suggest);
-			response.put("intention", intent);
+			response.put("intention", intention);
 			response.put("emotion", emotion);
-			response.put("intentionScore", intent_score);
+			response.put("intentionScore", intention_score);
 			response.put("emotionScore", emotion_score);
 			response.put("totalScore", total_score);
 			response.put("lengthScore", length_score);
