@@ -54,13 +54,13 @@ public class InterviewController {
 		
 		// User 정보 중 면접 데이터에 필요한 파일이 없을 시 예외처리
 		if (memberDTO.getCareer() == null) { // 경력 미기입
-			model.addAttribute("result", "해당 사용자의 경력이 기입되어있지 않습니다.");
+			model.addAttribute("auth", "해당 사용자의 경력이 기입되어있지 않습니다.");
 		} else if (memberDTO.getGender() == null) { // 성별 미기입
-			model.addAttribute("result", "해당 사용자의 성별이 기입되어있지 않습니다.");
+			model.addAttribute("auth", "해당 사용자의 성별이 기입되어있지 않습니다.");
 		} else if (memberDTO.getSector() == null) { // 직군 미기입
-			model.addAttribute("result", "해당 사용자의 직군이 기입되어있지 않습니다.");
+			model.addAttribute("auth", "해당 사용자의 직군이 기입되어있지 않습니다.");
 		} else { 
-			model.addAttribute("result", "1");
+			model.addAttribute("auth", "1");
 		}
 	} // end interviewGET()
 

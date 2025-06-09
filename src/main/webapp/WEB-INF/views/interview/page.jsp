@@ -123,9 +123,9 @@ button:hover {
 		const userInput = document.getElementById("userInput");
 		
 		// 데이터 기입 확인
-		var result = "${result}";
-		if(result !== "1") {
-			alert(result);
+		var auth = "${auth}";
+		if(auth !== "1") {
+			alert(auth);
 			window.history.back();
 		}
 		
