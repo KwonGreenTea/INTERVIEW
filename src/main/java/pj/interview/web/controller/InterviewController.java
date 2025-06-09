@@ -88,10 +88,10 @@ public class InterviewController {
 		File answerFile = new File(answerFilePath);
 		File resultFile = new File(resultFilePath);
 		
-		if (!userFile.exists()) userFile.delete();
-		if (!questionFile.exists()) questionFile.delete();
-		if (!answerFile.exists()) answerFile.delete();
-		if (!resultFile.exists()) resultFile.delete();
+		if (userFile.exists()) userFile.delete();
+		if (questionFile.exists()) questionFile.delete();
+		if (answerFile.exists()) answerFile.delete();
+		if (resultFile.exists()) resultFile.delete();
 		
 		// -- User 정보를 (memberId).Json 파일로 만들어 디렉토리에 저장
 		Map<String, Object> userInfo = new LinkedHashMap<>();
@@ -106,7 +106,7 @@ public class InterviewController {
 	    user_json.put("user_info", userInfo);
 	    
 	    ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(userFilePath), user_json);
+        objectMapper.writerWithDefaultPrettyPrinter().writeValue(userFile, user_json);
 
         log.info(memberId + "의 User Json 파일 생성 완료");
         
@@ -126,7 +126,7 @@ public class InterviewController {
 
 		// -- JSON 파일을 읽어와서 질문 내용을 클라이언트에 전달
 		// 질문 Json 불러오기
-		Map<String, Object> jsonMap = objectMapper.readValue(new File(questionFilePath), Map.class);
+		Map<String, Object> jsonMap = objectMapper.readValue(questionFile, Map.class);
 
 		// Json에서 중첩된 맵 꺼내기 question->text
 		Map<String, Object> questionMap = (Map<String, Object>) jsonMap.get("question");
@@ -141,7 +141,7 @@ public class InterviewController {
 		interviewDTO.setMemberId(memberId);
 		interviewDTO.setQuestion(question);
 		
-		// INTERVIEW 테이블 질문 업데이트
+		// INTERVIEW 테이블 질문 생성
 		int result = interviewService.createInterview(interviewDTO);
 		
 		if(result > 0) {
@@ -175,7 +175,7 @@ public class InterviewController {
 		// file 미존재시
 		File questionFile = new File(questionFilePath);
 	    if (!questionFile.exists()) {
-	        return new ResponseEntity<>("질문 파일이 존재하지 않습니다.", HttpStatus.NOT_FOUND);
+	        return new ResponseEntity<>("fail", HttpStatus.NOT_FOUND);
 	    }
 		
 		// -- 답변 내용을 JSON에 저장 후 다른 디렉토리에 파일 이동
@@ -203,9 +203,14 @@ public class InterviewController {
 			waitTime += 1000;
 		}
 		
+		// 생성되지 않았을 때
+		if (!resultFile.exists()) {
+			return new ResponseEntity<String>("fail", HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
 		// -- JSON 파일을 읽어와서 결과 내용을 클라이언트에 전달
 		// JSON 전체 로드
-		Map<String, Object> jsonMap_rsl = objectMapper.readValue(new File(resultFilePath), Map.class);
+		Map<String, Object> jsonMap_rsl = objectMapper.readValue(resultFile, Map.class);
 
 		// 1. intent -> category
 		List<Map<String, Object>> intentList2 = (List<Map<String, Object>>) ((Map<String, Object>) jsonMap_rsl.get("answer")).get("intent");
@@ -221,11 +226,6 @@ public class InterviewController {
 		
 		log.info(memberId + "의 Result Json 파일 내에 질문 출력 완료");
 				
-		// User JSON 삭제
-		questionFile.delete();
-		answerFile.delete();
-		resultFile.delete();
-				
 		InterviewDTO interviewDTO = new InterviewDTO();
 		interviewDTO.setAnswer(answer);
 		interviewDTO.setMemberId(memberId);
@@ -237,10 +237,13 @@ public class InterviewController {
 		int result = interviewService.updateRslInterview(interviewDTO);
 		
 		if(result > 0) {
+			questionFile.delete();
+			answerFile.delete();
+			
 			return new ResponseEntity<String>("success", HttpStatus.OK);
 		} else {
 			// Question JSON 삭제
-			questionFile.delete();
+			resultFile.delete();
 			return new ResponseEntity<String>("fail", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
