@@ -2,10 +2,15 @@ package pj.interview.web.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.attribute.PosixFilePermission;
+import java.nio.file.attribute.PosixFilePermissions;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -107,12 +112,17 @@ public class InterviewController {
 	    
 	    ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.writerWithDefaultPrettyPrinter().writeValue(userFile, user_json);
+        
+        // 저장 후 파일 권한 777로 설정 (rwxrwxrwx)
+        Path path = userFile.toPath();
+        Set<PosixFilePermission> perms = PosixFilePermissions.fromString("rwxrwxrwx");
+        Files.setPosixFilePermissions(path, perms);
 
         log.info(memberId + "의 User Json 파일 생성 완료");
         
 		// -- 질문이 생성될 때까지 대기 
 		int waitTime = 0;
-		while (!questionFile.exists() && waitTime < 30000) { // 최대 30초 대기
+		while (!questionFile.exists() && waitTime < 30000) { // 최대 30초 O대기
 			Thread.sleep(1000);
 			waitTime += 1000;
 		}
@@ -192,6 +202,11 @@ public class InterviewController {
 
 	    File answerFile = new File(answerFilePath);
 	    objectMapper.writerWithDefaultPrettyPrinter().writeValue(answerFile, jsonMap);
+	    
+	    // 저장 후 파일 권한 777로 설정 (rwxrwxrwx)
+        Path path = answerFile.toPath();
+        Set<PosixFilePermission> perms = PosixFilePermissions.fromString("rwxrwxrwx");
+        Files.setPosixFilePermissions(path, perms);
 	    
 	    log.info(memberId + "의 answer Json 파일 생성 완료");
 		
