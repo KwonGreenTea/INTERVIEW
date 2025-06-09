@@ -160,8 +160,8 @@ public class InterviewController {
 		}
 	}
 
+	@GetMapping(value = "/answer", produces = "application/json;charset=UTF-8")
 	@ResponseBody
-	@GetMapping(value = "/answer", produces = "text/plain;charset=UTF-8") 
 	public ResponseEntity<Map<String, Object>> answerGET(Model model, String answer, @AuthenticationPrincipal UserDetails userDetails)
 			throws IOException, InterruptedException {
 		log.info("answerGET()");
