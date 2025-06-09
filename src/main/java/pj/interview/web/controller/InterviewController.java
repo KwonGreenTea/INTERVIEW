@@ -100,18 +100,15 @@ public class InterviewController {
 		
 		// -- User 정보를 (memberId).Json 파일로 만들어 디렉토리에 저장
 		Map<String, Object> userInfo = new LinkedHashMap<>();
-	    userInfo.put("occupation", memberDTO.getSector());
-	    userInfo.put("channel", "MOCK");
-	    userInfo.put("place", "ONLINE");
-	    userInfo.put("gender", memberDTO.getGender());
-	    userInfo.put("ageRange", "-34"); // 나이 일단 고정
-	    userInfo.put("experience", memberDTO.getCareer());
+		userInfo.put("occupation", memberDTO.getSector());
+		userInfo.put("channel", "MOCK");
+		userInfo.put("place", "ONLINE");
+		userInfo.put("gender", memberDTO.getGender());
+		userInfo.put("ageRange", "-34"); // 예시: 나이 고정
+		userInfo.put("experience", memberDTO.getCareer());
 
-	    Map<String, Object> user_json = new HashMap<>();
-	    user_json.put("user_info", userInfo);
-	    
-	    ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.writerWithDefaultPrettyPrinter().writeValue(userFile, user_json);
+		ObjectMapper objectMapper = new ObjectMapper();
+		objectMapper.writerWithDefaultPrettyPrinter().writeValue(userFile, userInfo);
         
         // 저장 후 파일 권한 777로 설정 (rwxrwxrwx)
         Path path = userFile.toPath();
