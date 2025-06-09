@@ -203,7 +203,9 @@ public class InterviewController {
 	 	
 	    Map<String, Object> answerMap = (Map<String, Object>) a_jsonMap.get("answer");
 	    List<Map<String, Object>> intentList = (List<Map<String, Object>>) answerMap.get("user_answer");
-	    intentList.get(0).put("text", answer);
+	    if (intentList != null && !intentList.isEmpty()) {
+	        intentList.get(0).put("text", answer);
+	    }
 
 	    log.info(memberId + "의 answer Json에 답변 생성");
 	    
