@@ -160,7 +160,6 @@ public class InterviewController {
 		}
 	}
 
-	@ResponseBody
 	@GetMapping(value = "/answer", produces = "text/plain;charset=UTF-8") 
 	public ResponseEntity<Map<String, Object>> answerGET(Model model, String answer, @AuthenticationPrincipal UserDetails userDetails)
 			throws IOException, InterruptedException {
@@ -196,14 +195,20 @@ public class InterviewController {
 	    // 제안 답변 가져옴
 	 	Map<String, Object> summaryMap = (Map<String, Object>) ((Map<String, Object>) q_jsonMap.get("answer")).get("summary");
 	 	String suggest = (String) summaryMap.get("text");
+	 	
+	 	log.info(memberId + "의 question Json 파일에서 제안 가져옴");
 		
-		// -- 답변 내용을 Question JSON에 저장 후 result 디렉토리로 파일 이동
-	    Map<String, Object> answerMap = (Map<String, Object>) q_jsonMap.get("answer");
+		// -- 답변 내용을 Answer JSON에 저장 후 result 디렉토리로 파일 이동
+	 	File answerFile = new File(answerFilePath);
+	 	Map<String, Object> a_jsonMap = objectMapper.readValue(answerFile, Map.class);
+	 	
+	    Map<String, Object> answerMap = (Map<String, Object>) a_jsonMap.get("answer");
 	    List<Map<String, Object>> intentList = (List<Map<String, Object>>) answerMap.get("user_answer");
 	    intentList.get(0).put("text", answer);
 
-	    File answerFile = new File(answerFilePath);
-	    objectMapper.writerWithDefaultPrettyPrinter().writeValue(answerFile, q_jsonMap);
+	    log.info(memberId + "의 answer Json에 답변 생성");
+	    
+	    objectMapper.writerWithDefaultPrettyPrinter().writeValue(answerFile, a_jsonMap);
 	    
 	    // 저장 후 파일 권한 777로 설정 (rwxrwxrwx)
         Path path = answerFile.toPath();
