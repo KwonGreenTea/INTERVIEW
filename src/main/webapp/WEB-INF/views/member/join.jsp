@@ -179,6 +179,17 @@
             </span>
             <span id="sectorMsg"></span>
           </div>
+
+          <div class="join-row">
+            <h3 class="join-title">
+              <label for="career">경력</label>
+            </h3>
+            <span>
+              <input name="career" id="career" title="이름" maxlength="10" type="text" placeholder="년 단위로 입력하세요.">
+              <br>
+            </span>
+            <span id="careerMsg"></span>
+          </div>
         </div>
       </div>
       <!-- 스프링 시큐리티를 사용하면 모든 post 전송에 csrf 토큰을 추가해야 함 -->
