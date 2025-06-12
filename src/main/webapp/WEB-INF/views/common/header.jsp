@@ -69,13 +69,13 @@
 		<div class="header-section">
 			<!-- 로그아웃 상태 -->
 			<sec:authorize access="isAnonymous()">
-				<a href="../member/join">회원가입</a>
-				<a href="../auth/login">로그인</a>
+				<a href="../web_war/member/join">회원가입</a>
+				<a href="../web_war/auth/login">로그인</a>
 			</sec:authorize>
 
 			<!-- 로그인 상태 -->
 			<sec:authorize access="isAuthenticated()">
-				<p><a href="../member/info">
+				<p><a href="../web_war/member/info">
 					<sec:authentication property="principal.username"/></a></p>
 				<form action="../auth/logout" method="post">
 					<input type="submit" value="로그아웃">

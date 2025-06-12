@@ -38,7 +38,44 @@ public class MemberServiceImple implements MemberService {
 	@Override
 	public MemberDTO getMemberById(String memberId) {
 		log.info("getMemberById()");
-		return toDTO(memberMapper.selectMemberByMemberId(memberId));
+		MemberDTO member = toDTO(memberMapper.selectMemberByMemberId(memberId));
+
+		if (member != null) {
+			String sector = member.getSector();
+			switch (sector) {
+				case "BM":
+					member.setSector("비즈니스 매니저");
+					break;
+				case "SM":
+					member.setSector("영업 매니저");
+					break;
+				case "PS":
+					member.setSector("제품 전문가");
+					break;
+				case "RND":
+					member.setSector("연구 개발 부서");
+					break;
+				case "ICT":
+					member.setSector("정보통신기술");
+					break;
+				case "ARD":
+					member.setSector("응용 연구 개발");
+					break;
+				case "MM":
+					member.setSector("마케팅 매니저");
+					break;
+				default:
+					member.setSector("알 수 없는 직군");
+					break;
+			}
+
+			if("female".equals(member.getGender())){
+				member.setGender("여성");
+			}else if("male".equals(member.getGender())){
+				member.setGender("남성");
+			}
+		}
+		return member;
 	}
 
 

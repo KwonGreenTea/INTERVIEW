@@ -4,7 +4,99 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<style>
+  /* 폼 전체 스타일 */
+  .join-content {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
 
+  /* 제목 스타일 */
+  .join-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 8px;
+  }
+
+  /* 입력 필드 스타일 */
+  .join-row input[type="text"],
+  .join-row input[type="password"],
+  .join-row select {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 14px;
+  }
+
+  /* 입력 필드 포커스 시 스타일 */
+  .join-row input[type="text"]:focus,
+  .join-row input[type="password"]:focus,
+  .join-row select:focus {
+    border-color: #007bff;
+    outline: none;
+  }
+
+  /* 에러 메시지 스타일 */
+  .join-row span {
+    color: #ff6b6b;
+    font-size: 12px;
+  }
+
+  /* 버튼 스타일 */
+  #btnJoin {
+    width: 100%; /* 입력 필드와 동일하게 너비를 맞춤 */
+    padding: 12px; /* 패딩을 입력 필드와 동일하게 설정 */
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px; /* 입력 필드와 같은 폰트 크기 */
+    cursor: pointer;
+    transition: background-color 0.3s;
+    box-sizing: border-box; /* 패딩을 포함한 너비를 계산 */
+  }
+
+  #btnJoin:hover {
+    background-color: #0056b3;
+  }
+
+  /* 구분선 스타일 */
+  hr {
+    margin-top: 20px;
+    border: 0;
+    border-top: 1px solid #ddd;
+  }
+
+  /* 레이블 스타일 */
+  label {
+    display: block;
+    font-size: 14px;
+    color: #333;
+  }
+
+  /* 전체 폼의 반응형 처리 */
+  @media screen and (max-width: 768px) {
+    .join-content {
+      padding: 15px;
+    }
+
+    .join-row input[type="text"],
+    .join-row input[type="password"],
+    .join-row select {
+      font-size: 13px;
+    }
+
+
+  }
+</style>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js">
 </script>
 <title>회원가입</title>
@@ -43,23 +135,60 @@
             <br>
           </span>
           <span id="pwConfirmMsg"></span>
-          <h3 class="join-title">
-          	<label for="memberName">별명</label>
-          </h3>
-          <span>
-            <input id="memberName" type="text" name="memberName" title="이름" maxlength="10" >
-            <br>
-          </span>
-          <span id="nameMsg"></span>
+
+          <div class="join-row">
+            <h3 class="join-title">
+              <label for="memberName">별명</label>
+            </h3>
+            <span>
+              <input id="memberName" type="text" name="memberName" title="이름" maxlength="10" >
+              <br>
+            </span>
+            <span id="nameMsg"></span>
+          </div>
+
+          <div class="join-row">
+            <h3 class="join-title">
+              <label for="gender">성별</label>
+            </h3>
+            <span>
+              <select name="gender" id="gender">
+                <option value="male">남성</option>
+                <option value="female">여성</option>
+              </select>
+              <br>
+            </span>
+            <span id="genderMsg"></span>
+          </div>
+
+          <div class="join-row">
+            <h3 class="join-title">
+              <label for="sector">직군</label>
+            </h3>
+            <span>
+              <select name="sector" id="sector">
+                  <option value="BM">비즈니스 매니저</option>
+                  <option value="SM">영업 매니저</option>
+                  <option value="PS">제품 전문가</option>
+                  <option value="RND">연구 개발 부서</option>
+                  <option value="ICT">정보통신기술</option>
+                  <option value="ARD">응용 연구 개발</option>
+                  <option value="MM">마케팅 매니저</option>
+              </select>
+              <br>
+            </span>
+            <span id="sectorMsg"></span>
+          </div>
         </div>
       </div>
       <!-- 스프링 시큐리티를 사용하면 모든 post 전송에 csrf 토큰을 추가해야 함 -->
       <input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
       <hr>
-    </div>  
+      <button id="btnJoin">제출</button>
+    </div>
   </form>
   
-  <button id="btnJoin">제출</button>
+
   
   <script type="text/javascript">
   	$(document).ready(function(){

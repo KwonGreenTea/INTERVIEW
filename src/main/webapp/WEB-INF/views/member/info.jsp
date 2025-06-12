@@ -74,6 +74,9 @@
 		<h2>회원 정보</h2>
 		<p class="info">아이디 : ${memberDTO.memberId }</p>
 		<p class="info">회원 이름 : ${memberDTO.memberName }</p>
+		<p class="info">성    별 : ${memberDTO.gender }</p>
+		<p class="info">직    군 : ${memberDTO.sector }</p>
+		<p class="info">회원 이름 : ${memberDTO.memberName }</p>
 		<p class="info">회원 등록일 : 
 			<fmt:formatDate value="${memberDTO.createdDate }"
 				pattern="YY년 MM월 dd일 HH시 mm분" /></p>

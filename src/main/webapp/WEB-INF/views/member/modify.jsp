@@ -37,6 +37,47 @@
     margin-bottom: 10px;
     box-sizing: border-box;
   }
+  /* select 박스 스타일 */
+  .modify-row select {
+    width: 100%; /* 부모 요소의 너비에 맞춰서 꽉 채움 */
+    padding: 10px; /* 적당한 패딩 */
+    margin: 8px 0; /* 위와 아래에 여백을 추가 */
+    border: 1px solid #ccc; /* 테두리 색상 */
+    border-radius: 4px; /* 둥근 모서리 */
+    font-size: 14px; /* 폰트 크기 */
+    background-color: #fff; /* 배경색 */
+    color: #333; /* 글자색 */
+    box-sizing: border-box; /* 패딩을 포함한 너비 계산 */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease; /* 포커스 시 효과 */
+  }
+
+  /* select 박스 포커스 시 */
+  .modify-row select:focus {
+    border-color: #007bff; /* 포커스 시 테두리 색 */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3); /* 포커스 시 그림자 */
+    outline: none; /* 기본 포커스 효과 제거 */
+  }
+
+  /* 라벨 스타일 */
+  .modify-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    display: block; /* 블록 형식으로 라벨 표시 */
+    margin-bottom: 6px; /* 라벨과 select 사이 여백 */
+  }
+
+  /* 메시지 스타일 */
+  .message {
+    color: #ff6b6b; /* 에러 메시지 색상 */
+    font-size: 12px; /* 메시지 크기 */
+    margin-top: 4px; /* 메시지 위쪽 여백 */
+  }
+
+  /* 수정된 영역 (행) */
+  .modify-row {
+    margin-bottom: 20px; /* 각 행 간의 여백 */
+  }
   #btnModify {
     display: block;
     width: 100%;
@@ -95,6 +136,29 @@
         <label class="modify-title" for="memberName">별명</label>
         <input id="memberName" type="text" name="memberName" maxlength="10" value="${memberDTO.memberName}">
         <span id="nameMsg" class="message"></span>
+      </div>
+
+      <div class="modify-row">
+        <label class="modify-title" for="gender">성별</label>
+        <select name="sector" id="gender">
+          <option value="BM" ${memberDTO.sector == '비즈니스 매니저' ? 'selected' : ''}>비즈니스 매니저</option>
+          <option value="SM" ${memberDTO.sector == '영업 매니저' ? 'selected' : ''}>영업 매니저</option>
+          <option value="PS" ${memberDTO.sector == '제품 전문가' ? 'selected' : ''}>제품 전문가</option>
+          <option value="RND" ${memberDTO.sector == '연구 개발 부서' ? 'selected' : ''}>연구 개발 부서</option>
+          <option value="ICT" ${memberDTO.sector == '정보통신기술' ? 'selected' : ''}>정보통신기술</option>
+          <option value="ARD" ${memberDTO.sector == '응용 연구 개발' ? 'selected' : ''}>응용 연구 개발</option>
+          <option value="MM" ${memberDTO.sector == '마케팅 매니저' ? 'selected' : ''}>마케팅 매니저</option>
+        </select>
+        <span id="genderMsg" class="message"></span>
+      </div>
+
+      <div class="modify-row">
+        <label class="modify-title" for="memberName">별명</label>
+        <select name="gender" id="sector">
+          <option value="male" ${memberDTO.gender == '남성' ? 'selected' : ''}>남성</option>
+          <option value="female" ${memberDTO.gender == '여성' ? 'selected' : ''}>여성</option>
+        </select>
+        <span id="sectorMsg" class="message"></span>
       </div>
       
       <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
