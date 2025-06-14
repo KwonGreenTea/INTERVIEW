@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.PosixFilePermission;
 import java.nio.file.attribute.PosixFilePermissions;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -84,11 +85,12 @@ public class InterviewController {
 		String resultFilePath = "/home/ubuntu/result/" + "result_a_" + memberId + ".json";
 		
 		/* 개발
-		String userFilePath = "D:\\upload\\" + memberId + ".json";
-		String questionFilePath = "D:\\upload\\" + "q_" + memberId + ".json";
-		String answerFilePath = "D:\\upload\\" + "a_" + memberId + ".json";
-		String resultFilePath = "D:\\upload\\" + "result_a_" + memberId + ".json";
+		String userFilePath = "C:\\upload\\" + memberId + ".json";
+		String questionFilePath = "C:\\upload\\" + "q_" + memberId + ".json";
+		String answerFilePath = "C:\\upload\\" + "a_" + memberId + ".json";
+		String resultFilePath = "C:\\upload\\" + "result_a_" + memberId + ".json";
 		*/
+		
 		File userFile = new File(userFilePath);
 		File questionFile = new File(questionFilePath);
 		File answerFile = new File(answerFilePath);
@@ -115,7 +117,7 @@ public class InterviewController {
         Path path = userFile.toPath();
         Set<PosixFilePermission> perms = PosixFilePermissions.fromString("rwxrwxrwx");
         Files.setPosixFilePermissions(path, perms);
-
+		
         log.info(memberId + "의 User Json 파일 생성 완료");
         
 		// -- 질문이 생성될 때까지 대기 
@@ -178,26 +180,51 @@ public class InterviewController {
 		String resultFilePath = "/home/ubuntu/result/" + "result_a_" + memberId + ".json";
 		
 		/* 개발
-		String questionFilePath = "D:\\upload\\" + "q_" + memberId + ".json";
-		String answerFilePath = "D:\\upload\\" + "a_" + memberId + ".json";
-		String resultFilePath = "D:\\upload\\" + "result_a_" + memberId + ".json";
+		String questionFilePath = "C:\\upload\\" + "q_" + memberId + ".json";
+		String answerFilePath = "C:\\upload\\" + "a_" + memberId + ".json";
+		String resultFilePath = "C:\\upload\\" + "result_a_" + memberId + ".json";
 		*/
 		
-		// file 미존재시
 		File questionFile = new File(questionFilePath);
+		File answerFile = new File(answerFilePath);
+		
+		// file 미존재시
 	    if (!questionFile.exists()) {
 	        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
 	    }
 	    
+	    
+	    // ObjectMapper 준비
+	    ObjectMapper objectMapper = new ObjectMapper();
+
+	    // JSON 파일 로드
+	    Map<String, Object> q_jsonMap = objectMapper.readValue(questionFile, Map.class);
+	    
+	    // user_answer 추가
+	    List<Map<String, Object>> userAnswerList = new ArrayList<>();
+	    Map<String, Object> userAnswer = new HashMap<>();
+	    userAnswer.put("text", answer); // 답변 내용 추가
+	    userAnswerList.add(userAnswer);
+
+	    q_jsonMap.put("user_answer", userAnswerList);
+
+	    // 저장
+	    objectMapper.writerWithDefaultPrettyPrinter().writeValue(answerFile, q_jsonMap);
+	    
+	 
+	    /*
 	    // Question JSON 로드
 	    ObjectMapper objectMapper = new ObjectMapper();
 	    Map<String, Object> q_jsonMap = objectMapper.readValue(questionFile, Map.class);
+	    
 	    
 	    // 제안 답변 가져옴
 	 	Map<String, Object> summaryMap = (Map<String, Object>) ((Map<String, Object>) q_jsonMap.get("answer")).get("summary");
 	 	String suggest = (String) summaryMap.get("text");
 	 	
 	 	log.info(memberId + "의 question Json 파일에서 제안 가져옴");
+		
+		
 		
 		// -- 답변 내용을 Answer JSON에 저장 후 result 디렉토리로 파일 이동
 	 	Map<String, Object> a_jsonMap = objectMapper.readValue(questionFile, Map.class);
@@ -207,11 +234,9 @@ public class InterviewController {
 	    if (intentList != null && !intentList.isEmpty()) {
 	        intentList.get(0).put("text", answer);
 	    }
+	    */
 
 	    log.info(memberId + "의 answer Json에 답변 생성");
-	    
-	    File answerFile = new File(answerFilePath);
-	    objectMapper.writerWithDefaultPrettyPrinter().writeValue(answerFile, a_jsonMap);
 	    
 	    // 저장 후 파일 권한 777로 설정 (rwxrwxrwx)
         Path path = answerFile.toPath();
@@ -236,27 +261,20 @@ public class InterviewController {
 		// -- JSON 파일을 읽어와서 model을 통해 클라이언트에 전달
 		Map<String, Object> rsl_jsonMap = objectMapper.readValue(resultFile, Map.class);
 
-        // 1. score_result 전체 맵 추출
-        Map<String, Object> scoreResultMap = (Map<String, Object>) rsl_jsonMap.get("score_result");
+        // 추천 답변 추출
+        String suggest = (String) rsl_jsonMap.get("recommended_answer");
 
-        int total_score = (int) scoreResultMap.get("total");
-        int intention_score = (int) scoreResultMap.get("intent");
-        int emotion_score = (int) scoreResultMap.get("emotion");
-        int length_score = (int) scoreResultMap.get("length");
-        int quality_score = (int) scoreResultMap.get("quality");
-
-        // 2. breakdown 추출
-        Map<String, Object> breakdownMap = (Map<String, Object>) scoreResultMap.get("breakdown");
-
-        String intention = (String) breakdownMap.get("gt_intent");
-        String emotion = (String) breakdownMap.get("gt_emotion");
-        int wordCount = (int) breakdownMap.get("word_count");
-
-        // 3. grade 추출
+        // 1. grade 추출
         String grade = (String) rsl_jsonMap.get("grade");
 
-        // 4. feedback 리스트 추출
+        // 2. feedback 리스트 추출
         List<String> feedbackList = (List<String>) rsl_jsonMap.get("feedback");
+        
+        // 3. analysis 객체 가져오기
+        Map<String, Object> analysisMap = (Map<String, Object>) rsl_jsonMap.get("analysis");
+
+        String emotion = (String) analysisMap.get("pred_emotion_kor");
+        String intention = (String) analysisMap.get("pred_intent_kor");
 		
 		log.info(memberId + "의 Result Json 파일 내에 질문 출력 완료");
 				
@@ -266,12 +284,6 @@ public class InterviewController {
 		interviewDTO.setSuggest(suggest);
 		interviewDTO.setIntention(intention);
 		interviewDTO.setEmotion(emotion);
-		interviewDTO.setIntentionScore(intention_score);
-		interviewDTO.setEmotionScore(emotion_score);
-		interviewDTO.setTotalScore(total_score);
-		interviewDTO.setLengthScore(length_score);
-		interviewDTO.setQualityScore(quality_score);
-		interviewDTO.setWordCount(wordCount);
 		interviewDTO.setGrade(grade);
 		
 		// INTERVIEW 테이블 결과 업데이트
@@ -285,12 +297,6 @@ public class InterviewController {
 			response.put("suggest", suggest);
 			response.put("intention", intention);
 			response.put("emotion", emotion);
-			response.put("intentionScore", intention_score);
-			response.put("emotionScore", emotion_score);
-			response.put("totalScore", total_score);
-			response.put("lengthScore", length_score);
-			response.put("qualityScore", quality_score);
-			response.put("wordCount", wordCount);
 			response.put("grade", grade);
 			response.put("feedbackList", feedbackList);
 

@@ -29,8 +29,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 회원 정보 등록 -->
 	<insert id="insertMember">
 		INSERT INTO MEMBER 
-		(MEMBER_ID, MEMBER_PW, MEMBER_NAME)
-		VALUES (#{memberId}, #{memberPw}, #{memberName})
+		(MEMBER_ID, MEMBER_PW, MEMBER_NAME, sector, gender, career)
+		VALUES (#{memberId}, #{memberPw}, #{memberName}, #{sector}, #{gender}, #{career})
 
 	</insert>
 	
@@ -65,7 +65,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     	SET
         MEMBER_PW = #{memberPw},
         MEMBER_NAME = #{memberName},
-        UPDATED_DATE = #{updatedDate}
+        SECTOR = #{sector},
+        GENDER = #{gender},
+        career = #{career},
+        UPDATED_DATE = SYSDATE
     	WHERE
         MEMBER_ID = #{memberId}
 	</update>
