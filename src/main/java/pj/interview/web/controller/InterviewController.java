@@ -103,7 +103,8 @@ public class InterviewController {
 		
 		// -- User 정보를 (memberId).Json 파일로 만들어 디렉토리에 저장
 		Map<String, Object> userInfo = new LinkedHashMap<>();
-		userInfo.put("occupation", memberDTO.getSector());
+		//userInfo.put("occupation", memberDTO.getSector());
+		userInfo.put("occupation", "BM");
 		userInfo.put("channel", "MOCK");
 		userInfo.put("place", "ONLINE");
 		userInfo.put("gender", memberDTO.getGender());
