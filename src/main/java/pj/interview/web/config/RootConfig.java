@@ -23,7 +23,7 @@ import com.zaxxer.hikari.HikariDataSource;
 @EnableTransactionManagement // 트랜잭션 관리 활성화
 public class RootConfig {
 	
-	/* 배포 설정 
+	/* 배포 설정 */
 	@Bean
 	public DataSource dataSource() { // DataSource 빈 생성 메서드
 		System.setProperty("oracle.net.tns_admin", "/home/ubuntu/wallet");
@@ -40,9 +40,9 @@ public class RootConfig {
 		HikariDataSource ds = new HikariDataSource(config); // 설정 객체를 사용하여 DataSource 빈 생성
 		return ds; // DataSource 빈 반환
 	}
-	*/
 	
-	/* 개발설정 */
+	
+	/* 개발설정 
 	@Bean
 	public DataSource dataSource() { // DataSource 빈 생성 메서드
 		HikariConfig config = new HikariConfig(); // 설정 객체
@@ -56,7 +56,7 @@ public class RootConfig {
 		HikariDataSource ds = new HikariDataSource(config); // config 객체를 참조하여 DataSource 객체 생성
 		return ds; // ds 객체 리턴
 	}
-	
+	*/
 	
 	@Bean
 	public SqlSessionFactory sqlSessionFactory() throws Exception {
