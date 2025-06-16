@@ -155,17 +155,19 @@
       <div class="modify-row">
         <label class="modify-title" for="memberName">성별</label>
         <select name="gender" id="sector">
-          <option value="male" ${memberDTO.gender == '남성' ? 'selected' : ''}>남성</option>
-          <option value="female" ${memberDTO.gender == '여성' ? 'selected' : ''}>여성</option>
+          <option value="Male" ${memberDTO.gender == '남성' ? 'selected' : ''}>남성</option>
+          <option value="Female" ${memberDTO.gender == '여성' ? 'selected' : ''}>여성</option>
         </select>
         <span id="sectorMsg" class="message"></span>
       </div>
-
+		
+		<!-- 
       <div class="modify-row">
         <label class="modify-title" for="career">경력</label>
         <input id="career" type="text" name="career" maxlength="10" value="${memberDTO.career}">
         <span id="careerMsg" class="message"></span>
       </div>
+      	 -->
       
       <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
     </div>

@@ -20,12 +20,9 @@ public class InterviewDTO {
     private String suggest;
     private String emotion;
     private String intention;
-    private int emotionScore;
-    private int intentionScore;
-    private int totalScore;
-    private int lengthScore;
-    private int qualityScore;
-    private int wordCount;
+    private String sector;
+    private String gender;
+    private String career;
     private String grade;
     private Date createdDate;
 	

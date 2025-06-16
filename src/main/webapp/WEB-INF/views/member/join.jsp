@@ -153,8 +153,8 @@
             </h3>
             <span>
               <select name="gender" id="gender">
-                <option value="male">남성</option>
-                <option value="female">여성</option>
+                <option value="Male">남성</option>
+                <option value="Female">여성</option>
               </select>
               <br>
             </span>
@@ -185,7 +185,7 @@
               <label for="career">경력</label>
             </h3>
             <span>
-              <input name="career" id="career" title="이름" maxlength="10" type="text" placeholder="년 단위로 입력하세요.">
+              <input name="career" id="career" title="이름" maxlength="10" type="text" placeholder="년 단위로 입력하세요. 없다면 0으로 입력해주세요.">
               <br>
             </span>
             <span id="careerMsg"></span>
@@ -321,6 +321,22 @@
 		  	   	return;
 		  	} else {
 		  		$('#nameMsg').html('');
+		  		nameFlag = true; // 유효성 true
+		  	} 
+
+		});
+	  	
+	 	// 경력 유효성 검사
+	  	$('#career').blur(function() {
+			var career = $('#career').val(); // 입력한 데이터 값
+
+		  	if(career.trim() === '') {  // 이름이 입력되지 않았을 경우
+		  		$('#careerMsg').html('필수 입력입니다.');
+		  		$('#careerMsg').css('color', 'red');
+		  		nameFlag = false; // 유효성 false
+		  	   	return;
+		  	} else {
+		  		$('#careerMsg').html('');
 		  		nameFlag = true; // 유효성 true
 		  	} 
 

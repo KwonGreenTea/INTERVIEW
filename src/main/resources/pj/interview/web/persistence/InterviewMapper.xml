@@ -18,13 +18,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="suggest" column="SUGGEST"/>
 		<result property="emotion" column="EMOTION"/>
 		<result property="intention" column="INTENTION"/>
-		<result property="emotionScore" column="EMOTION_SCORE"/>
-		<result property="intentionScore" column="INTENTION_SCORE"/>
-		<result property="totalScore" column="TOTAL_SCORE"/>
-		<result property="lengthScore" column="LENGTH_SCORE"/>
-		<result property="qualityScore" column="QUALITY_SCORE"/>
-		<result property="wordCount" column="WORD_COUNT"/>
 		<result property="grade" column="GRADE"/>
+		<result property="sector" column="SECTOR"/>
+		<result property="career" column="CAREER"/>
+		<result property="gender" column="GENDER"/>
 		<result property="createdDate" column="CREATED_DATE"/>
 	</resultMap>
 
@@ -33,8 +30,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<insert id="createInterview">
 		<!-- 게시글 등록 -->
-		INSERT INTO INTERVIEW (INTERVIEW_ID, MEMBER_ID, QUESTION)
-		VALUES (INTERVIEW_SEQ.NEXTVAL, #{memberId}, #{question})
+		INSERT INTO INTERVIEW (INTERVIEW_ID, MEMBER_ID, QUESTION, SECTOR, CAREER, GENDER)
+		VALUES (INTERVIEW_SEQ.NEXTVAL, #{memberId}, #{question}, #{sector}, #{career}, #{gender})
 	</insert>
 
 	<update id="updateRslInterview">
@@ -43,12 +40,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		    SUGGEST = #{suggest}, 
 		    EMOTION = #{emotion}, 
 		    INTENTION = #{intention},
-		    EMOTION_SCORE = #{emotionScore},
-		    INTENTION_SCORE = #{intentionScore},
-		    TOTAL_SCORE = #{totalScore},
-		    LENGTH_SCORE = #{lengthScore},
-		    QUALITY_SCORE = #{qualityScore},
-		    WORD_COUNT = #{wordCount},
 		    GRADE = #{grade}
 		WHERE INTERVIEW_ID = (
 			SELECT INTERVIEW_ID FROM (

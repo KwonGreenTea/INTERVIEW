@@ -44,6 +44,11 @@ public class MemberController {
 		// 비밀번호 암호화
 		String encPw = passwordEncoder.encode(memberDTO.getMemberPw());
 		memberDTO.setMemberPw(encPw); // 암호화된 데이터 적용
+		if(Integer.parseInt(memberDTO.getCareer()) > 0) {
+			memberDTO.setCareer("Experienced");
+		} else {
+			memberDTO.setCareer("New");
+		}
 		int result = memberService.createMember(memberDTO);
 		log.info(result + "행 등록");
 		return "redirect:/auth/login";
@@ -85,6 +90,11 @@ public class MemberController {
 		log.info("modifyPOST()");
 		String encPw = passwordEncoder.encode(memberDTO.getMemberPw());
 		memberDTO.setMemberPw(encPw); 
+		if(Integer.parseInt(memberDTO.getCareer()) > 0) {
+			memberDTO.setCareer("Experienced");
+		} else {
+			memberDTO.setCareer("New");
+		}
 		memberService.updateMember(memberDTO);
 		
 		return "redirect:/member/info";

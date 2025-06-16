@@ -75,6 +75,10 @@ public class InterviewController {
 		// User ID 불러옴
 		String memberId = userDetails.getUsername();
 		MemberDTO memberDTO = memberService.getMemberById(memberId);
+		
+		String sector = memberDTO.getSector();
+		String gender = memberDTO.getGender();
+		String career = memberDTO.getCareer();
 
 		// 파일 경로
 		// 디렉토리에 기존에 남아있는 파일이 있으면 삭제
@@ -103,13 +107,12 @@ public class InterviewController {
 		
 		// -- User 정보를 (memberId).Json 파일로 만들어 디렉토리에 저장
 		Map<String, Object> userInfo = new LinkedHashMap<>();
-		//userInfo.put("occupation", memberDTO.getSector());
-		userInfo.put("occupation", "BM");
+		userInfo.put("occupation", sector);
 		userInfo.put("channel", "MOCK");
 		userInfo.put("place", "ONLINE");
-		userInfo.put("gender", memberDTO.getGender());
+		userInfo.put("gender", gender);
 		userInfo.put("ageRange", "-34"); // 예시: 나이 고정
-		userInfo.put("experience", memberDTO.getCareer());
+		userInfo.put("experience", career);
 
 		ObjectMapper objectMapper = new ObjectMapper();
 		objectMapper.writerWithDefaultPrettyPrinter().writeValue(userFile, userInfo);
@@ -123,7 +126,7 @@ public class InterviewController {
         
 		// -- 질문이 생성될 때까지 대기 
 		int waitTime = 0;
-		while (!questionFile.exists() && waitTime < 30000) { // 최대 60초 대기
+		while (!questionFile.exists() && waitTime < 60000) { // 최대 60초 대기
 			Thread.sleep(1000);
 			waitTime += 1000;
 		}
@@ -148,6 +151,9 @@ public class InterviewController {
 		InterviewDTO interviewDTO = new InterviewDTO();
 		interviewDTO.setMemberId(memberId);
 		interviewDTO.setQuestion(question);
+		interviewDTO.setSector(sector);
+		interviewDTO.setGender(gender);
+		interviewDTO.setCareer(career);
 		
 		// INTERVIEW 테이블 질문 생성
 		int result = interviewService.createInterview(interviewDTO);
@@ -211,31 +217,6 @@ public class InterviewController {
 
 	    // 저장
 	    objectMapper.writerWithDefaultPrettyPrinter().writeValue(answerFile, q_jsonMap);
-	    
-	 
-	    /*
-	    // Question JSON 로드
-	    ObjectMapper objectMapper = new ObjectMapper();
-	    Map<String, Object> q_jsonMap = objectMapper.readValue(questionFile, Map.class);
-	    
-	    
-	    // 제안 답변 가져옴
-	 	Map<String, Object> summaryMap = (Map<String, Object>) ((Map<String, Object>) q_jsonMap.get("answer")).get("summary");
-	 	String suggest = (String) summaryMap.get("text");
-	 	
-	 	log.info(memberId + "의 question Json 파일에서 제안 가져옴");
-		
-		
-		
-		// -- 답변 내용을 Answer JSON에 저장 후 result 디렉토리로 파일 이동
-	 	Map<String, Object> a_jsonMap = objectMapper.readValue(questionFile, Map.class);
-	 	
-	    Map<String, Object> answerMap = (Map<String, Object>) a_jsonMap.get("answer");
-	    List<Map<String, Object>> intentList = (List<Map<String, Object>>) answerMap.get("user_answer");
-	    if (intentList != null && !intentList.isEmpty()) {
-	        intentList.get(0).put("text", answer);
-	    }
-	    */
 
 	    log.info(memberId + "의 answer Json에 답변 생성");
 	    
