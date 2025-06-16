@@ -292,13 +292,13 @@ public class InterviewController {
 
 		// User ID 불러옴
 		String memberId = userDetails.getUsername();
-		String memberSector = memberService.getMemberById(memberId).getSector();
+		String sector = memberService.getMemberById(memberId).getSector();
 		//String memberSector = memberService.getMemberById(memberId).getSector();
 
 		log.info("memberId:::"+memberId);
-		log.info("memberSector:::"+memberSector);
+		log.info("memberSector:::"+sector);
 
-		Collection sameSectorUsers = memberService.selectSameSector(memberSector);
+		Collection sameSectorUsers = memberService.selectSameSector(sector);
 		log.info("sameSectorUsers::::"+sameSectorUsers);
 		/*Collection otherInterview = interviewService.getOtherInterview(memberSector);
 		log.info("otherInterview::::"+otherInterview);*/
