@@ -70,7 +70,7 @@ public class MemberController {
 		// @AuthenticationPrincipal : 인증된 사용자의 Principal을 주입
 		log.info("info()");
 		String memberId = userDetails.getUsername(); // 로그인된 사용자 아이디 저장
-		MemberDTO memberDTO = memberService.getMemberById(memberId);
+		MemberDTO memberDTO = memberService.selectKorInfo(memberId);
 		model.addAttribute("memberDTO", memberDTO);
 	}
 	
@@ -79,7 +79,7 @@ public class MemberController {
 	public void modifyGET(Model model, @AuthenticationPrincipal UserDetails userDetails) {
 		log.info("modifyGET()");
 		String memberId = userDetails.getUsername();
-		MemberDTO memberDTO = memberService.getMemberById(memberId);
+		MemberDTO memberDTO = memberService.selectKorInfo(memberId);
 		model.addAttribute("memberDTO", memberDTO);
 	}
 	

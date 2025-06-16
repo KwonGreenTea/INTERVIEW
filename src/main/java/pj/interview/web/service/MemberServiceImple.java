@@ -9,6 +9,8 @@ import pj.interview.web.domain.Member;
 import pj.interview.web.domain.MemberDTO;
 import pj.interview.web.persistence.MemberMapper;
 
+import java.util.Collection;
+
 @Service
 @Log4j
 public class MemberServiceImple implements MemberService {
@@ -40,6 +42,11 @@ public class MemberServiceImple implements MemberService {
 		log.info("getMemberById()");
 		MemberDTO member = toDTO(memberMapper.selectMemberByMemberId(memberId));
 
+		return member;
+	}
+	@Override
+	public MemberDTO selectKorInfo(String memberId){
+		MemberDTO member = getMemberById(memberId);
 		if (member != null) {
 			String sector = member.getSector();
 			switch (sector) {
@@ -94,6 +101,12 @@ public class MemberServiceImple implements MemberService {
 		int deleteRoleResult = memberMapper.deleteMemberRole(memberId);
 		log.info(deleteRoleResult + "행 권한 정보 삭제");
 		return 1;
+	}
+
+	@Override
+	public Collection selectSameSector(String sector){
+		Collection sameSectorUsers = memberMapper.selectSameSector(sector);
+		return sameSectorUsers;
 	}
 	
 	

@@ -23,6 +23,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="career" column="CAREER"/>
 		<result property="gender" column="GENDER"/>
 		<result property="createdDate" column="CREATED_DATE"/>
+		<result property="memberSector" column="MEMBER_SECTOR"/>
 	</resultMap>
 
 	<!-- select, insert, update, delete 태그 : SQL 쿼리 정의 태그 id : 쿼리 식별 역할. Mapper 
@@ -50,6 +51,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			) WHERE ROWNUM = 1
 		)
 </update>
+
+<select id="getOtherInterview" resultMap="interviewResultMap" parameterType="java.lang.String">
+	SELECT
+		QUESTION,
+		ANSWER,
+		EMOTION,
+		INTENTION,
+		SUGGEST,
+		MEMBER_SECTOR,
+		CREATED_DATE
+	FROM INTERVIEW
+	WHERE MEMBER_SECTOR = #{sector}
+
+</select>
 
 </mapper>
 
