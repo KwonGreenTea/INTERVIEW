@@ -73,7 +73,9 @@ button {
 </head>
 <body>
 	<%@ include file="../common/header.jsp"%>
-	
+
+	${sameSectorUsers.toString()}
+
 
 </body>
 </html>

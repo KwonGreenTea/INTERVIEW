@@ -5,7 +5,11 @@ import org.springframework.stereotype.Service;
 
 import lombok.extern.log4j.Log4j;
 import pj.interview.web.domain.InterviewDTO;
+import pj.interview.web.domain.MemberDTO;
 import pj.interview.web.persistence.InterviewMapper;
+
+import java.util.Collection;
+import java.util.List;
 
 @Service
 @Log4j
@@ -24,6 +28,7 @@ public class InterviewServiceImple implements InterviewService{
 		return interviewMapper.updateRslInterview(interviewDTO);
 	}
 	
-	
+	@Override
+	public List<MemberDTO> getOtherInterview(String sector) {return interviewMapper.getOtherInterview(sector);}
 	
 } // end InterviewServiceImple

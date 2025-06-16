@@ -7,11 +7,7 @@ import java.nio.file.Path;
 import java.nio.file.attribute.PosixFilePermission;
 import java.nio.file.attribute.PosixFilePermissions;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -310,8 +306,23 @@ public class InterviewController {
 	}
 	
 	@GetMapping("/userList")
-	public void userListGET() {
+	public void userListGET(Model model,@AuthenticationPrincipal UserDetails userDetails) {
 		log.info("userListGET()");
+
+		// User ID 불러옴
+		String memberId = userDetails.getUsername();
+		String memberSector = memberService.getMemberById(memberId).getSector();
+		//String memberSector = memberService.getMemberById(memberId).getSector();
+
+		log.info("memberId:::"+memberId);
+		log.info("memberSector:::"+memberSector);
+
+		Collection sameSectorUsers = memberService.selectSameSector(memberSector);
+		log.info("sameSectorUsers::::"+sameSectorUsers);
+		/*Collection otherInterview = interviewService.getOtherInterview(memberSector);
+		log.info("otherInterview::::"+otherInterview);*/
+
+		model.addAttribute("sameSectorUsers", sameSectorUsers);
 
 	}
 
