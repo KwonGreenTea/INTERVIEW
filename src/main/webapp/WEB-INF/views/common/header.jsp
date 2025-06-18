@@ -75,7 +75,7 @@
 
 			<!-- 로그인 상태 -->
 			<sec:authorize access="isAuthenticated()">
-				<p><a href="../web_war/member/info">
+				<p><a href="../member/info">
 					<sec:authentication property="principal.username"/></a></p>
 				<form action="../auth/logout" method="post">
 					<input type="submit" value="로그아웃">
