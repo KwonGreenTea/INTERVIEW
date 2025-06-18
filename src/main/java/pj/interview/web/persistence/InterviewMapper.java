@@ -2,6 +2,7 @@ package pj.interview.web.persistence;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -19,5 +20,6 @@ public interface InterviewMapper {
 	// @Param : 자바 객체의 속성을 mapper에 매핑
 	int createInterview(InterviewDTO interviewDTO);
 	int updateRslInterview(InterviewDTO interviewDTO);
-	List<MemberDTO> getOtherInterview(String sector);
+	Collection<MemberDTO> getOtherInterview(String sector);
+	Map<String,MemberDTO> getInterviewInfo(String memberId);
 } // end BoardMapper

@@ -17,6 +17,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -278,7 +279,7 @@ public class InterviewController {
 		log.info("memberId:::"+memberId);
 		log.info("memberSector:::"+sector);
 
-		Collection sameSectorUsers = memberService.selectSameSector(sector);
+		Collection<MemberDTO> sameSectorUsers = memberService.selectSameSector(sector);
 		log.info("sameSectorUsers::::"+sameSectorUsers);
 		/*Collection otherInterview = interviewService.getOtherInterview(memberSector);
 		log.info("otherInterview::::"+otherInterview);*/
@@ -286,5 +287,21 @@ public class InterviewController {
 		model.addAttribute("sameSectorUsers", sameSectorUsers);
 
 	}
+
+	@GetMapping("/otherResult/{memberId}")
+	public String getOtherResult(@PathVariable String memberId, Model model,
+								 @AuthenticationPrincipal UserDetails userDetails) {
+		log.info("getOtherResult() - memberId: {}"+memberId);
+
+		Map<String,MemberDTO> info = interviewService.getInterviewInfo(memberId);
+
+		// 필요한 데이터 처리 및 모델에 추가
+		model.addAttribute("memberId", memberId);
+		model.addAttribute("info", info);
+
+		return "/interview/otherResult";
+	}
+
+
 
 } // end InterviewController

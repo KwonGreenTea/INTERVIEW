@@ -184,8 +184,11 @@
             <h3 class="join-title">
               <label for="career">경력</label>
             </h3>
+            <select name="sector" id="career">
+              <option value="New">경력있음</option>
+              <option value="Experienced">경력없음</option>
+            </select>
             <span>
-              <input name="career" id="career" title="이름" maxlength="10" type="text" placeholder="년 단위로 입력하세요. 없다면 0으로 입력해주세요.">
               <br>
             </span>
             <span id="careerMsg"></span>

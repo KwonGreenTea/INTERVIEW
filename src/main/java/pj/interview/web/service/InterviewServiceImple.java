@@ -10,6 +10,7 @@ import pj.interview.web.persistence.InterviewMapper;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Log4j
@@ -29,6 +30,10 @@ public class InterviewServiceImple implements InterviewService{
 	}
 	
 	@Override
-	public List<MemberDTO> getOtherInterview(String sector) {return interviewMapper.getOtherInterview(sector);}
-	
+	public Collection<MemberDTO> getOtherInterview(String sector) {return interviewMapper.getOtherInterview(sector);}
+
+	@Override
+	public Map<String,MemberDTO> getInterviewInfo(String memberId) {return interviewMapper.getInterviewInfo(memberId);}
+
+
 } // end InterviewServiceImple

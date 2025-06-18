@@ -168,7 +168,7 @@
         <span id="careerMsg" class="message"></span>
       </div>
       	 -->
-      
+
       <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
     </div>
   </form>

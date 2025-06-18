@@ -65,6 +65,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 </select>
 
+<select id="getInterviewInfo" resultMap="interviewResultMap" parameterType="java.lang.String">
+	SELECT
+		QUESTION,
+		ANSWER,
+		EMOTION,
+		INTENTION,
+		SUGGEST,
+		SECTOR,
+		CREATED_DATE
+	FROM INTERVIEW
+	WHERE MEMBER_ID = #{memberId}
+
+</select>
+
 </mapper>
 
 

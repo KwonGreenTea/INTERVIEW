@@ -5,6 +5,7 @@ import pj.interview.web.domain.MemberDTO;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 public interface InterviewService {
 
@@ -12,6 +13,8 @@ public interface InterviewService {
 
 	int updateRslInterview(InterviewDTO interviewDTO);
 
-	List<MemberDTO> getOtherInterview(String sector);
+	Collection<MemberDTO> getOtherInterview(String sector);
+
+	Map<String,MemberDTO> getInterviewInfo(String memberId);
 	
 } // end InterviewService

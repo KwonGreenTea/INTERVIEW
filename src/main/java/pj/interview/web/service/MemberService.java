@@ -11,5 +11,5 @@ public interface MemberService {
 	MemberDTO selectKorInfo(String memberId);
 	int updateMember(MemberDTO memberDTO); // 회원 정보 수정
 	int deleteMember(String memberId); // 회원 정보 삭제
-	Collection selectSameSector(String sector); //같은 직군의 사용자 조회
+	Collection<MemberDTO> selectSameSector(String sector); //같은 직군의 사용자 조회
 }
