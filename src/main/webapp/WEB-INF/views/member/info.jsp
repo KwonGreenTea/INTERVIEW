@@ -76,7 +76,7 @@
 		<p class="info">회원 이름 : ${memberDTO.memberName }</p>
 		<p class="info">성    별 : ${memberDTO.gender }</p>
 		<p class="info">직    군 : ${memberDTO.sector }</p>
-		<p class="info">경    력 : ${memberDTO.career }년</p>
+		<!-- <p class="info">경    력 : ${memberDTO.career }년</p>  -->
 		<p class="info">회원 이름 : ${memberDTO.memberName }</p>
 		<p class="info">회원 등록일 : 
 			<fmt:formatDate value="${memberDTO.createdDate }"
