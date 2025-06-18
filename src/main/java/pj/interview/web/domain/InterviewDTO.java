@@ -1,6 +1,7 @@
 package pj.interview.web.domain;
 
 import java.util.Date;
+import java.util.List;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,5 +26,9 @@ public class InterviewDTO {
     private String career;
     private String grade;
     private Date createdDate;
+    
+    private List<String> feedbackList;
+    
+    
 	
 } // end InterviewDTO

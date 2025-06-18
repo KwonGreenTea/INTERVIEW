@@ -78,18 +78,11 @@ public class InterviewController {
 
 		// 파일 경로
 		// 디렉토리에 기존에 남아있는 파일이 있으면 삭제
-		/* 배포 */
 		String userFilePath = "/home/ubuntu/user/" + memberId + ".json";
 		String questionFilePath = "/home/ubuntu/question/" + "q_" + memberId + ".json";
 		String answerFilePath = "/home/ubuntu/answer/" + "a_" + memberId + ".json";
 		String resultFilePath = "/home/ubuntu/result/" + "result_a_" + memberId + ".json";
 		
-		/* 개발
-		String userFilePath = "C:\\upload\\" + memberId + ".json";
-		String questionFilePath = "C:\\upload\\" + "q_" + memberId + ".json";
-		String answerFilePath = "C:\\upload\\" + "a_" + memberId + ".json";
-		String resultFilePath = "C:\\upload\\" + "result_a_" + memberId + ".json";
-		*/
 		
 		File userFile = new File(userFilePath);
 		File questionFile = new File(questionFilePath);
@@ -167,7 +160,7 @@ public class InterviewController {
 
 	@GetMapping(value = "/answer", produces = "application/json;charset=UTF-8")
 	@ResponseBody
-	public ResponseEntity<Map<String, Object>> answerGET(Model model, String answer, @AuthenticationPrincipal UserDetails userDetails)
+	public ResponseEntity<InterviewDTO> answerGET(Model model, String answer, @AuthenticationPrincipal UserDetails userDetails)
 			throws IOException, InterruptedException {
 		log.info("answerGET()");
 		
@@ -177,23 +170,17 @@ public class InterviewController {
 		// User ID 불러옴
 		String memberId = userDetails.getUsername();
 
-		/* 배포 */
 		String questionFilePath = "/home/ubuntu/question/" + "q_" + memberId + ".json";
 		String answerFilePath = "/home/ubuntu/answer/" + "a_" + memberId + ".json";
 		String resultFilePath = "/home/ubuntu/result/" + "result_a_" + memberId + ".json";
 		
-		/* 개발
-		String questionFilePath = "C:\\upload\\" + "q_" + memberId + ".json";
-		String answerFilePath = "C:\\upload\\" + "a_" + memberId + ".json";
-		String resultFilePath = "C:\\upload\\" + "result_a_" + memberId + ".json";
-		*/
 		
 		File questionFile = new File(questionFilePath);
 		File answerFile = new File(answerFilePath);
 		
 		// file 미존재시
 	    if (!questionFile.exists()) {
-	        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+	        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 	    }
 	    
 	    
@@ -214,8 +201,6 @@ public class InterviewController {
 	    // 저장
 	    objectMapper.writerWithDefaultPrettyPrinter().writeValue(answerFile, q_jsonMap);
 
-	    log.info(memberId + "의 answer Json에 답변 생성");
-	    
 	    // 저장 후 파일 권한 777로 설정 (rwxrwxrwx)
         Path path = answerFile.toPath();
         Set<PosixFilePermission> perms = PosixFilePermissions.fromString("rwxrwxrwx");
@@ -233,7 +218,7 @@ public class InterviewController {
 		
 		// 생성되지 않았을 때
 		if (!resultFile.exists()) {
-			return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		
 		// -- JSON 파일을 읽어와서 model을 통해 클라이언트에 전달
@@ -271,18 +256,13 @@ public class InterviewController {
 			questionFile.delete();
 			answerFile.delete();
 			
-			Map<String, Object> response = new HashMap<>();
-			response.put("suggest", suggest);
-			response.put("intention", intention);
-			response.put("emotion", emotion);
-			response.put("grade", grade);
-			response.put("feedbackList", feedbackList);
+			interviewDTO.setFeedbackList(feedbackList);
 
-			return new ResponseEntity<>(response, HttpStatus.OK);
+			return new ResponseEntity<>(interviewDTO, HttpStatus.OK);
 		} else {
 			// result JSON 삭제
 			resultFile.delete();
-			return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 	
