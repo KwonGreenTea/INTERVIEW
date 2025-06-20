@@ -7,7 +7,12 @@ import java.nio.file.Path;
 import java.nio.file.attribute.PosixFilePermission;
 import java.nio.file.attribute.PosixFilePermissions;
 import java.util.ArrayList;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -293,7 +298,7 @@ public class InterviewController {
 								 @AuthenticationPrincipal UserDetails userDetails) {
 		log.info("getOtherResult() - memberId: {}"+memberId);
 
-		Map<String,MemberDTO> info = interviewService.getInterviewInfo(memberId);
+		ArrayList<MemberDTO> info = interviewService.getInterviewInfo(memberId);
 
 		// 필요한 데이터 처리 및 모델에 추가
 		model.addAttribute("memberId", memberId);

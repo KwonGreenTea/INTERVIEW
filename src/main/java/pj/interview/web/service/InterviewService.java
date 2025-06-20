@@ -1,11 +1,10 @@
 package pj.interview.web.service;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import pj.interview.web.domain.InterviewDTO;
 import pj.interview.web.domain.MemberDTO;
-
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
 
 public interface InterviewService {
 
@@ -15,6 +14,6 @@ public interface InterviewService {
 
 	Collection<MemberDTO> getOtherInterview(String sector);
 
-	Map<String,MemberDTO> getInterviewInfo(String memberId);
+	ArrayList<MemberDTO> getInterviewInfo(String memberId);
 	
 } // end InterviewService

@@ -1,16 +1,12 @@
 package pj.interview.web.persistence;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
-import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 
-import pj.interview.web.domain.Board;
 import pj.interview.web.domain.InterviewDTO;
 import pj.interview.web.domain.MemberDTO;
-import pj.interview.web.util.Pagination;
 
 @Mapper
 public interface InterviewMapper {
@@ -21,5 +17,5 @@ public interface InterviewMapper {
 	int createInterview(InterviewDTO interviewDTO);
 	int updateRslInterview(InterviewDTO interviewDTO);
 	Collection<MemberDTO> getOtherInterview(String sector);
-	Map<String,MemberDTO> getInterviewInfo(String memberId);
+	ArrayList<MemberDTO> getInterviewInfo(String memberId);
 } // end BoardMapper
