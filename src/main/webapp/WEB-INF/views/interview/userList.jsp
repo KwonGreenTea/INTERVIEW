@@ -84,8 +84,8 @@
 				</td>
 				<td>
 					<c:choose>
-						<c:when test="${member.gender == 'male'}">남성</c:when>
-						<c:when test="${member.gender == 'female'}">여성</c:when>
+						<c:when test="${member.gender == 'Male'}">남성</c:when>
+						<c:when test="${member.gender == 'Female'}">여성</c:when>
 					</c:choose>
 				</td>
 			</tr>
