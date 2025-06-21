@@ -59,32 +59,54 @@ tr:hover {
 	<%@ include file="../common/header.jsp"%>
 
 	<h2>다른 사용자 답변 목록</h2>
-	<table>
-		<tr>
-			<th>직무</th>
-			<th>성별</th>
-			<th>결과등급</th>
-		</tr>
-		<c:forEach var="interview" items="${InterviewDTO}">
-			<tr data-id="${interview.interviewId}">
-				<td><c:choose>
-						<c:when test="${interview.sector == 'BM'}">비즈니스 매니저</c:when>
-						<c:when test="${interview.sector == 'SM'}">영업 매니저</c:when>
-						<c:when test="${interview.sector == 'PS'}">제품 전문가</c:when>
-						<c:when test="${interview.sector == 'RND'}">연구 개발 부서</c:when>
-						<c:when test="${interview.sector == 'ICT'}">정보통신기술</c:when>
-						<c:when test="${interview.sector == 'ARD'}">응용 연구 개발</c:when>
-						<c:when test="${interview.sector == 'MM'}">마케팅 매니저</c:when>
-						<c:otherwise>알 수 없는 직군</c:otherwise>
-					</c:choose></td>
-				<td><c:choose>
-						<c:when test="${interview.gender == 'Male'}">남성</c:when>
-						<c:when test="${interview.gender == 'Female'}">여성</c:when>
-					</c:choose></td>
-				<td>${interview.grade}</td>
-			</tr>
-		</c:forEach>
-	</table>
+<table>
+    <tr>
+        <th>직무</th>
+        <th>성별</th>
+        <th>결과등급</th>
+    </tr>
+    <c:forEach var="interview" items="${InterviewDTO}">
+        <tr class="detail_button" data-id="${interview.interviewId}">
+            <td>
+                <c:choose>
+                    <c:when test="${interview.sector == 'BM'}">비즈니스 매니저</c:when>
+                    <c:when test="${interview.sector == 'SM'}">영업 매니저</c:when>
+                    <c:when test="${interview.sector == 'PS'}">제품 전문가</c:when>
+                    <c:when test="${interview.sector == 'RND'}">연구 개발 부서</c:when>
+                    <c:when test="${interview.sector == 'ICT'}">정보통신기술</c:when>
+                    <c:when test="${interview.sector == 'ARD'}">응용 연구 개발</c:when>
+                    <c:when test="${interview.sector == 'MM'}">마케팅 매니저</c:when>
+                    <c:otherwise>알 수 없는 직군</c:otherwise>
+                </c:choose>
+            </td>
+            <td>
+                <c:choose>
+                    <c:when test="${interview.gender == 'Male'}">남성</c:when>
+                    <c:when test="${interview.gender == 'Female'}">여성</c:when>
+                    <c:otherwise>기타</c:otherwise>
+                </c:choose>
+            </td>
+            <td>${interview.grade}</td>
+        </tr>
+    </c:forEach>
+</table>
+
+<!-- form은 비워 두고, action을 JS에서 동적으로 설정 -->
+<form id="detailForm" method="get"></form>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(".detail_button").on("click", function () {
+        var interviewId = $(this).data("id");
+        var form = $("#detailForm");
+
+        // action에 Path Variable을 포함해 동적으로 설정
+        form.attr("action", "/interview/userList/" + interviewId);
+
+        // 폼 제출
+        form.submit();
+    });
+</script>
 
 </body>
 </html>
