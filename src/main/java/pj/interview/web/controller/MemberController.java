@@ -44,7 +44,7 @@ public class MemberController {
 		// 비밀번호 암호화
 		String encPw = passwordEncoder.encode(memberDTO.getMemberPw());
 		memberDTO.setMemberPw(encPw); // 암호화된 데이터 적용
-		memberDTO.setCareer("New");
+		memberDTO.setCareer("Experienced");
 		int result = memberService.createMember(memberDTO);
 		log.info(result + "행 등록");
 		return "redirect:/auth/login";
