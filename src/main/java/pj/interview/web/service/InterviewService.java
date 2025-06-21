@@ -3,7 +3,6 @@ package pj.interview.web.service;
 import java.util.ArrayList;
 
 import pj.interview.web.domain.InterviewDTO;
-import pj.interview.web.domain.MemberDTO;
 
 public interface InterviewService {
 
@@ -11,8 +10,10 @@ public interface InterviewService {
 
 	int updateRslInterview(InterviewDTO interviewDTO);
 
-	ArrayList<MemberDTO> getInterviewInfo(String memberId);
+	ArrayList<InterviewDTO> getInterviewInfo(String memberId);
 
 	ArrayList<InterviewDTO> getOtherInterview();
+
+	ArrayList<InterviewDTO> getInterviewInfoForInterviewId(int interviewId);
 	
 } // end InterviewService

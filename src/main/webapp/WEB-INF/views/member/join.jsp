@@ -180,6 +180,7 @@
             <span id="sectorMsg"></span>
           </div>
 
+<!-- 
           <div class="join-row">
             <h3 class="join-title">
               <label for="career">경력</label>
@@ -192,8 +193,9 @@
               <br>
             </span>
             <span id="careerMsg"></span>
-          </div>
+          </div>-->
         </div>
+         
       </div>
       <!-- 스프링 시큐리티를 사용하면 모든 post 전송에 csrf 토큰을 추가해야 함 -->
       <input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">

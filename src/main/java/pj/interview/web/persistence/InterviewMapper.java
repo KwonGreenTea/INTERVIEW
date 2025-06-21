@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import org.apache.ibatis.annotations.Mapper;
 
 import pj.interview.web.domain.InterviewDTO;
-import pj.interview.web.domain.MemberDTO;
 
 @Mapper
 public interface InterviewMapper {
@@ -16,5 +15,6 @@ public interface InterviewMapper {
 	int createInterview(InterviewDTO interviewDTO);
 	int updateRslInterview(InterviewDTO interviewDTO);
 	ArrayList<InterviewDTO> getOtherInterview();
-	ArrayList<MemberDTO> getInterviewInfo(String memberId);
+	ArrayList<InterviewDTO> getInterviewInfo(String memberId);
+	ArrayList<InterviewDTO> getInterviewInfoForInterviewId(int interviewId);
 } // end BoardMapper

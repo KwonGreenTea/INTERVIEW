@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import lombok.extern.log4j.Log4j;
 import pj.interview.web.domain.InterviewDTO;
-import pj.interview.web.domain.MemberDTO;
 import pj.interview.web.persistence.InterviewMapper;
 
 @Service
@@ -31,7 +30,12 @@ public class InterviewServiceImple implements InterviewService{
 	public ArrayList<InterviewDTO> getOtherInterview() {return interviewMapper.getOtherInterview();}
 
 	@Override
-	public ArrayList<MemberDTO> getInterviewInfo(String memberId) {return interviewMapper.getInterviewInfo(memberId);}
+	public ArrayList<InterviewDTO> getInterviewInfo(String memberId) {return interviewMapper.getInterviewInfo(memberId);}
+
+	@Override
+	public ArrayList<InterviewDTO> getInterviewInfoForInterviewId(int interviewId) {
+		return interviewMapper.getInterviewInfoForInterviewId(interviewId);
+	}
 
 
 } // end InterviewServiceImple

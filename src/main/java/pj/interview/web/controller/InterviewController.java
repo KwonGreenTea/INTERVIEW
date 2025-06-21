@@ -107,7 +107,7 @@ public class InterviewController {
 		userInfo.put("place", "ONLINE");
 		userInfo.put("gender", gender);
 		userInfo.put("ageRange", "-34"); // 예시: 나이 고정
-		userInfo.put("experience", career);
+		userInfo.put("experience", "New");
 
 		ObjectMapper objectMapper = new ObjectMapper();
 		objectMapper.writerWithDefaultPrettyPrinter().writeValue(userFile, userInfo);
@@ -282,14 +282,12 @@ public class InterviewController {
 
 	}
 	
-	@GetMapping("/userList/{memberId}")
-	public String userListForMemberIdGET(@PathVariable String memberId, Model model,@AuthenticationPrincipal UserDetails userDetails) {
-		log.info("getOtherResult() - memberId: {}"+memberId);
+	@GetMapping("/userList/{interviewId}")
+	public String userListForInterviewIdGET(@PathVariable int interviewId, Model model,@AuthenticationPrincipal UserDetails userDetails) {
+		log.info("userListForInterviewIdGET()");
 
-		ArrayList<MemberDTO> info = interviewService.getInterviewInfo(memberId);
-
-		// 필요한 데이터 처리 및 모델에 추가
-		model.addAttribute("memberId", memberId);
+		ArrayList<InterviewDTO> info = interviewService.getInterviewInfoForInterviewId(interviewId);
+		
 		model.addAttribute("info", info);
 
 		return "/interview/otherResult";
@@ -300,7 +298,7 @@ public class InterviewController {
 								 @AuthenticationPrincipal UserDetails userDetails) {
 		log.info("getOtherResult() - memberId: {}"+memberId);
 
-		ArrayList<MemberDTO> info = interviewService.getInterviewInfo(memberId);
+		ArrayList<InterviewDTO> info = interviewService.getInterviewInfo(memberId);
 
 		// 필요한 데이터 처리 및 모델에 추가
 		model.addAttribute("memberId", memberId);
@@ -315,7 +313,7 @@ public class InterviewController {
 
 		// User ID 불러옴
 		String memberId = userDetails.getUsername();
-		ArrayList<MemberDTO> info = interviewService.getInterviewInfo(memberId);
+		ArrayList<InterviewDTO> info = interviewService.getInterviewInfo(memberId);
 
 		// 필요한 데이터 처리 및 모델에 추가
 		model.addAttribute("memberId", memberId);

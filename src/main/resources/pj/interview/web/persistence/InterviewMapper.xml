@@ -89,6 +89,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 </select>
 
+<select id="getInterviewInfoForInterviewId" resultMap="interviewResultMap">
+	SELECT *
+	FROM INTERVIEW
+	WHERE INTERVIEW_ID = #{interviewId}
+</select>
+
+
+
 </mapper>
 
 

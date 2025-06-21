@@ -61,13 +61,12 @@ tr:hover {
 	<h2>다른 사용자 답변 목록</h2>
 	<table>
 		<tr>
-			<th>이름</th>
 			<th>직무</th>
 			<th>성별</th>
+			<th>결과등급</th>
 		</tr>
-		<c:forEach var="member" items="${InterviewDTO}">
-			<tr data-id="${member.memberId}">
-				<td>${member.memberName}</td>
+		<c:forEach var="interview" items="${InterviewDTO}">
+			<tr data-id="${interview.interviewId}">
 				<td><c:choose>
 						<c:when test="${member.sector == 'BM'}">비즈니스 매니저</c:when>
 						<c:when test="${member.sector == 'SM'}">영업 매니저</c:when>
@@ -82,6 +81,7 @@ tr:hover {
 						<c:when test="${member.gender == 'Male'}">남성</c:when>
 						<c:when test="${member.gender == 'Female'}">여성</c:when>
 					</c:choose></td>
+				<td>${interview.grade}</td>
 			</tr>
 		</c:forEach>
 	</table>
