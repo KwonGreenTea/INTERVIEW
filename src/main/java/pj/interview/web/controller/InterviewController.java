@@ -59,9 +59,13 @@ public class InterviewController {
 			model.addAttribute("auth", "해당 사용자의 경력이 기입되어있지 않습니다.");
 		} else if (memberDTO.getGender() == null) { // 성별 미기입
 			model.addAttribute("auth", "해당 사용자의 성별이 기입되어있지 않습니다.");
-		} else if (memberDTO.getSector() == null) { // 직군 미기입
+		} 
+		/*
+		else if (memberDTO.getSector() == null) { // 직군 미기입
 			model.addAttribute("auth", "해당 사용자의 직군이 기입되어있지 않습니다.");
-		} else { 
+		} 
+		*/
+		else { 
 			model.addAttribute("auth", "1");
 		}
 	} // end interviewGET()
