@@ -50,11 +50,13 @@ body {
 	<div class="main-container">
 		<a href="interview/page" class="box-link">
 			<div class="box">인터뷰</div>
-		</a> <a href="interview/userList" class="box-link">
+		</a>
+		<a href="interview/myInterview" class="box-link">
+			<div class="box">나의 인터뷰 보기</div>
+		</a>
+		<a href="interview/userList" class="box-link">
 			<div class="box">다른 사용자의 인터뷰 보기</div>
-		<%--</a> <a href="board/list" class="box-link">
-			<div class="box">게시판</div>
-		</a>--%>
+		</a>
 	</div>
 	<%@ include file="common/footer.jsp" %>
 </body>

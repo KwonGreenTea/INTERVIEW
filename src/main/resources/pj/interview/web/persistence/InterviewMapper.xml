@@ -73,6 +73,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		INTENTION,
 		SUGGEST,
 		SECTOR,
+		GRADE,
 		CREATED_DATE
 	FROM INTERVIEW
 	WHERE MEMBER_ID = #{memberId}

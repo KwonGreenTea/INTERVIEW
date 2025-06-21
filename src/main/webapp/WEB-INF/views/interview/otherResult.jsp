@@ -45,12 +45,23 @@
 	</style>
 </head>
 <body>
+<!-- 🔙 뒤로가기 버튼 추가 -->
+<button onclick="history.back()" style="
+  background-color: #3498db;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 14px;
+  border-radius: 5px;
+  cursor: pointer;
+">
+	← 뒤로가기
+</button>
 
 <%
 	// 날짜별 구분을 위한 이전 날짜 저장 변수
 	String lastDate = "";
 %>
-
 <c:forEach var="interview" items="${info}">
 	<fmt:formatDate value="${interview.createdDate}" pattern="yyyy-MM-dd" var="currentDate" />
 	

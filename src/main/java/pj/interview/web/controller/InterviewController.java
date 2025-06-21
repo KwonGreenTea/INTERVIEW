@@ -307,6 +307,21 @@ public class InterviewController {
 		return "/interview/otherResult";
 	}
 
+	@GetMapping("/myInterview")
+	public String getMyInterview(Model model,
+								 @AuthenticationPrincipal UserDetails userDetails) {
+
+		// User ID 불러옴
+		String memberId = userDetails.getUsername();
+		ArrayList<MemberDTO> info = interviewService.getInterviewInfo(memberId);
+
+		// 필요한 데이터 처리 및 모델에 추가
+		model.addAttribute("memberId", memberId);
+		model.addAttribute("info", info);
+
+		return "/interview/myInterview";
+	}
+
 
 
 } // end InterviewController
