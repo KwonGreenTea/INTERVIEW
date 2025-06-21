@@ -29,8 +29,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 회원 정보 등록 -->
 	<insert id="insertMember">
 		INSERT INTO MEMBER 
-		(MEMBER_ID, MEMBER_PW, MEMBER_NAME, sector, gender, career)
-		VALUES (#{memberId}, #{memberPw}, #{memberName}, #{sector}, #{gender}, #{career})
+		(MEMBER_ID, MEMBER_PW, MEMBER_NAME, sector, gender)
+		VALUES (#{memberId}, #{memberPw}, #{memberName}, #{sector}, #{gender})
 
 	</insert>
 	

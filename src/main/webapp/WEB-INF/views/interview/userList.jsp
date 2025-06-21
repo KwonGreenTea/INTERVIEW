@@ -68,18 +68,18 @@ tr:hover {
 		<c:forEach var="interview" items="${InterviewDTO}">
 			<tr data-id="${interview.interviewId}">
 				<td><c:choose>
-						<c:when test="${member.sector == 'BM'}">비즈니스 매니저</c:when>
-						<c:when test="${member.sector == 'SM'}">영업 매니저</c:when>
-						<c:when test="${member.sector == 'PS'}">제품 전문가</c:when>
-						<c:when test="${member.sector == 'RND'}">연구 개발 부서</c:when>
-						<c:when test="${member.sector == 'ICT'}">정보통신기술</c:when>
-						<c:when test="${member.sector == 'ARD'}">응용 연구 개발</c:when>
-						<c:when test="${member.sector == 'MM'}">마케팅 매니저</c:when>
+						<c:when test="${interview.sector == 'BM'}">비즈니스 매니저</c:when>
+						<c:when test="${interview.sector == 'SM'}">영업 매니저</c:when>
+						<c:when test="${interview.sector == 'PS'}">제품 전문가</c:when>
+						<c:when test="${interview.sector == 'RND'}">연구 개발 부서</c:when>
+						<c:when test="${interview.sector == 'ICT'}">정보통신기술</c:when>
+						<c:when test="${interview.sector == 'ARD'}">응용 연구 개발</c:when>
+						<c:when test="${interview.sector == 'MM'}">마케팅 매니저</c:when>
 						<c:otherwise>알 수 없는 직군</c:otherwise>
 					</c:choose></td>
 				<td><c:choose>
-						<c:when test="${member.gender == 'Male'}">남성</c:when>
-						<c:when test="${member.gender == 'Female'}">여성</c:when>
+						<c:when test="${interview.gender == 'Male'}">남성</c:when>
+						<c:when test="${interview.gender == 'Female'}">여성</c:when>
 					</c:choose></td>
 				<td>${interview.grade}</td>
 			</tr>
