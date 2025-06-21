@@ -37,6 +37,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		httpSecurity.authorizeRequests()
 				.antMatchers("/board/register").access("hasRole('ROLE_MEMBER')")
 				.antMatchers("/interview/page").access("hasRole('ROLE_MEMBER')")
+				.antMatchers("/interview/myInterview").access("hasRole('ROLE_MEMBER')")
 				.antMatchers("/member/info").access("hasRole('ROLE_MEMBER')")
 				.antMatchers("/member/modify").access("hasRole('ROLE_MEMBER')");
 

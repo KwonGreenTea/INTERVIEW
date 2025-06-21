@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <head>
     <title>나의 인터뷰</title>
     <style>

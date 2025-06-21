@@ -6,46 +6,46 @@
 <html>
 <head>
 <style>
-	body {
-		font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-		background-color: #f9f9f9;
-		padding: 30px;
-	}
+body {
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	background-color: #f9f9f9;
+	padding: 30px;
+}
 
-	h2 {
-		text-align: center;
-		color: #333;
-		margin-bottom: 20px;
-	}
+h2 {
+	text-align: center;
+	color: #333;
+	margin-bottom: 20px;
+}
 
-	table {
-		margin: 0 auto;
-		border-collapse: collapse;
-		width: 80%;
-		background-color: #ffffff;
-		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-		border-radius: 8px;
-		overflow: hidden;
-	}
+table {
+	margin: 0 auto;
+	border-collapse: collapse;
+	width: 80%;
+	background-color: #ffffff;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	border-radius: 8px;
+	overflow: hidden;
+}
 
-	th, td {
-		padding: 14px 18px;
-		text-align: left;
-	}
+th, td {
+	padding: 14px 18px;
+	text-align: left;
+}
 
-	th {
-		background-color: #7fc481;
-		color: white;
-		font-weight: bold;
-	}
+th {
+	background-color: #7fc481;
+	color: white;
+	font-weight: bold;
+}
 
-	tr:nth-child(even) {
-		background-color: #f2f2f2;
-	}
+tr:nth-child(even) {
+	background-color: #f2f2f2;
+}
 
-	tr:hover {
-		background-color: #e0f7e9;
-	}
+tr:hover {
+	background-color: #e0f7e9;
+}
 </style>
 <!-- jquery 라이브러리 import -->
 <script src="https://code.jquery.com/jquery-3.7.1.js">
@@ -58,20 +58,17 @@
 <body>
 	<%@ include file="../common/header.jsp"%>
 
-	<h2>동일 직무 사용자 목록</h2>
+	<h2>다른 사용자 답변 목록</h2>
 	<table>
 		<tr>
 			<th>이름</th>
 			<th>직무</th>
 			<th>성별</th>
 		</tr>
-		<c:forEach var="member" items="${sameSectorUsers}">
-			<tr>
-				<td><a href="otherResult/${member.memberId}">
-						${member.memberName}
-				</a></td>
-				<td>
-					<c:choose>
+		<c:forEach var="member" items="${InterviewDTO}">
+			<tr data-id="${member.memberId}">
+				<td>${member.memberName}</td>
+				<td><c:choose>
 						<c:when test="${member.sector == 'BM'}">비즈니스 매니저</c:when>
 						<c:when test="${member.sector == 'SM'}">영업 매니저</c:when>
 						<c:when test="${member.sector == 'PS'}">제품 전문가</c:when>
@@ -80,14 +77,11 @@
 						<c:when test="${member.sector == 'ARD'}">응용 연구 개발</c:when>
 						<c:when test="${member.sector == 'MM'}">마케팅 매니저</c:when>
 						<c:otherwise>알 수 없는 직군</c:otherwise>
-					</c:choose>
-				</td>
-				<td>
-					<c:choose>
+					</c:choose></td>
+				<td><c:choose>
 						<c:when test="${member.gender == 'Male'}">남성</c:when>
 						<c:when test="${member.gender == 'Female'}">여성</c:when>
-					</c:choose>
-				</td>
+					</c:choose></td>
 			</tr>
 		</c:forEach>
 	</table>

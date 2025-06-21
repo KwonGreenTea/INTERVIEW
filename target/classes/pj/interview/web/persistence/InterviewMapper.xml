@@ -51,17 +51,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		)
 </update>
 
-<select id="getOtherInterview" resultMap="interviewResultMap" parameterType="java.lang.String">
-	SELECT
-		QUESTION,
-		ANSWER,
-		EMOTION,
-		INTENTION,
-		SUGGEST,
-		SECTOR,
-		CREATED_DATE
-	FROM INTERVIEW
-	WHERE MEMBER_SECTOR = #{sector}
+<select id="getOtherInterview" resultMap="interviewResultMap">
+	<![CDATA[
+	SELECT *
+	FROM (
+		SELECT
+			QUESTION,
+			ANSWER,
+			EMOTION,
+			INTENTION,
+			SUGGEST,
+			SECTOR,
+			CREATED_DATE
+		FROM INTERVIEW
+		WHERE ANSWER IS NOT NULL
+		ORDER BY CREATED_DATE DESC
+	)
+	WHERE ROWNUM <= 5
+	]]>
 
 </select>
 
@@ -73,9 +80,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		INTENTION,
 		SUGGEST,
 		SECTOR,
+		GRADE,
 		CREATED_DATE
 	FROM INTERVIEW
 	WHERE MEMBER_ID = #{memberId}
+	AND ANSWER IS NOT NULL
 	ORDER BY CREATED_DATE DESC
 
 </select>

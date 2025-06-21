@@ -276,21 +276,23 @@ public class InterviewController {
 	public void userListGET(Model model,@AuthenticationPrincipal UserDetails userDetails) {
 		log.info("userListGET()");
 
-		// User ID 불러옴
-		String memberId = userDetails.getUsername();
-		String sector = memberService.getMemberById(memberId).getSector();
-		//String memberSector = memberService.getMemberById(memberId).getSector();
+		ArrayList<InterviewDTO> allUsersInterview = interviewService.getOtherInterview();
 
-		log.info("memberId:::"+memberId);
-		log.info("memberSector:::"+sector);
+		model.addAttribute("InterviewDTO", allUsersInterview);
 
-		Collection<MemberDTO> sameSectorUsers = memberService.selectSameSector(sector);
-		log.info("sameSectorUsers::::"+sameSectorUsers);
-		/*Collection otherInterview = interviewService.getOtherInterview(memberSector);
-		log.info("otherInterview::::"+otherInterview);*/
+	}
+	
+	@GetMapping("/userList/{memberId}")
+	public String userListForMemberIdGET(@PathVariable String memberId, Model model,@AuthenticationPrincipal UserDetails userDetails) {
+		log.info("getOtherResult() - memberId: {}"+memberId);
 
-		model.addAttribute("sameSectorUsers", sameSectorUsers);
+		ArrayList<MemberDTO> info = interviewService.getInterviewInfo(memberId);
 
+		// 필요한 데이터 처리 및 모델에 추가
+		model.addAttribute("memberId", memberId);
+		model.addAttribute("info", info);
+
+		return "/interview/otherResult";
 	}
 
 	@GetMapping("/otherResult/{memberId}")
